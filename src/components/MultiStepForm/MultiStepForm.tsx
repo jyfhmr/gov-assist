@@ -57,6 +57,13 @@ const MultiStepForm: React.FC = () => {
         backgroundColor: token.colorFillAlter,
     };
 
+    const handleTestJson = () => {
+        // getFieldsValue(true) obtiene todos los valores, incluyendo los de campos no visibles.
+        const values = form.getFieldsValue(true);
+        console.log('--- JSON de Prueba ---', values);
+        message.info('El estado actual del JSON se ha mostrado en la consola.');
+    };
+
     return (
         <Form form={form} onFinish={onFinish} layout="vertical" initialValues={{ hasAliases: false }}>
             <Steps
@@ -80,6 +87,15 @@ const MultiStepForm: React.FC = () => {
                         Back
                     </Button>
                 )}
+
+                {/* --- INICIO DEL CAMBIO EN LOS BOTONES --- */}
+                {current === steps.length - 1 && (
+                    <Button onClick={handleTestJson} style={{ marginLeft: 8 }}>
+                        Test JSON
+                    </Button>
+                )}
+                {/* --- FIN DEL CAMBIO EN LOS BOTONES --- */}
+
                 {current < steps.length - 1 && (
                     <Button type="primary" onClick={handleNext}>
                         Continue
