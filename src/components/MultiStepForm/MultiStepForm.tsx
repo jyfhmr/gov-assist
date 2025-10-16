@@ -4,6 +4,7 @@ import ApplicantForm from '../ApplicantForm/ApplicantForm';
 import PassportForm from '../PassportForm/PassportForm';
 import EligibilityForm from '../EligibilityForm/EligibilityForm';
 import PersonalForm from '../PersonalForm/PersonalForm';
+import SocialMediaForm from '../SocialMediaForm/SocialMediaForm';
 
 const MultiStepForm: React.FC = () => {
     const [form] = Form.useForm();
@@ -40,6 +41,11 @@ const MultiStepForm: React.FC = () => {
                 'countryPhoneCode', 'phoneNumber', 'motherFamilyName', 'motherFirstName',
                 'fatherFamilyName', 'fatherFirstName'
             ],
+        },
+        {
+            title: 'Social Media Information',
+            content: <SocialMediaForm />,
+            fields: [],
         },
     ];
 
