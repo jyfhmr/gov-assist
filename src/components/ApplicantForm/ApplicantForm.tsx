@@ -13,7 +13,7 @@ import {
     Tooltip
 } from 'antd';
 import { QuestionCircleOutlined, UploadOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import countries from '../../data/countries.json';
+import CountrySelect from '../CountrySelect/CountrySelect';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -123,13 +123,7 @@ const ApplicantForm: React.FC = () => {
                 </Col>
                 <Col span={12}>
                     <Form.Item name="countryOfBirth" label="COUNTRY OF BIRTH *" rules={[{ required: true }]}>
-                        <Select placeholder="Select Country" showSearch>
-                            {countries.map(country => (
-                                <Option key={country} value={country}>
-                                    {country}
-                                </Option>
-                            ))}
-                        </Select>
+                       <CountrySelect placeholder="Select Country" />
                     </Form.Item>
                 </Col>
             </Row>
