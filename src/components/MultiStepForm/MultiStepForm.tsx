@@ -5,6 +5,7 @@ import PassportForm from '../PassportForm/PassportForm';
 import EligibilityForm from '../EligibilityForm/EligibilityForm';
 import PersonalForm from '../PersonalForm/PersonalForm';
 import SocialMediaForm from '../SocialMediaForm/SocialMediaForm';
+import EmploymentForm from '../EmploymentForm/EmploymentForm';
 
 const MultiStepForm: React.FC = () => {
     const [form] = Form.useForm();
@@ -46,6 +47,11 @@ const MultiStepForm: React.FC = () => {
             title: 'Social Media Information',
             content: <SocialMediaForm />,
             fields: [],
+        },
+        {
+            title: 'Employment Information',
+            content: <EmploymentForm />,
+            fields: ['hasEmployer'],
         },
     ];
 
