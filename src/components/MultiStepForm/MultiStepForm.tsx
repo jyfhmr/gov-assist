@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Steps, Button, Form, message, theme } from 'antd';
 import ApplicantForm from '../ApplicantForm/ApplicantForm';
 import PassportForm from '../PassportForm/PassportForm';
+import EligibilityForm from '../EligibilityForm/EligibilityForm';
 
 const MultiStepForm: React.FC = () => {
     const [form] = Form.useForm();
@@ -24,8 +25,11 @@ const MultiStepForm: React.FC = () => {
         },
         {
             title: 'Eligibility Information',
-            content: <div>Contenido de Eligibility aquí...</div>,
-            fields: [],
+            content: <EligibilityForm />,
+            fields: [
+                'q1_health', 'q2_crime', 'q3_drugs', 'q4_terror', 'q5_fraud',
+                'q6_employment', 'q7_visa_denial', 'q8_overstay', 'q9_travel'
+            ],
         },
     ];
 
