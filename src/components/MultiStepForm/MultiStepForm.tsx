@@ -3,6 +3,7 @@ import { Steps, Button, Form, message, theme } from 'antd';
 import ApplicantForm from '../ApplicantForm/ApplicantForm';
 import PassportForm from '../PassportForm/PassportForm';
 import EligibilityForm from '../EligibilityForm/EligibilityForm';
+import PersonalForm from '../PersonalForm/PersonalForm';
 
 const MultiStepForm: React.FC = () => {
     const [form] = Form.useForm();
@@ -29,6 +30,15 @@ const MultiStepForm: React.FC = () => {
             fields: [
                 'q1_health', 'q2_crime', 'q3_drugs', 'q4_terror', 'q5_fraud',
                 'q6_employment', 'q7_visa_denial', 'q8_overstay', 'q9_travel'
+            ],
+        },
+        {
+            title: 'Personal Information',
+            content: <PersonalForm />,
+            fields: [
+                'address1', 'city', 'stateProvince', 'country', 'phoneType',
+                'countryPhoneCode', 'phoneNumber', 'motherFamilyName', 'motherFirstName',
+                'fatherFamilyName', 'fatherFirstName'
             ],
         },
     ];
