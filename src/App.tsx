@@ -1,10 +1,9 @@
 import React from 'react';
 import { Layout, Typography, theme } from 'antd';
-import FormSteps from './components/FormSteps/FormSteps'; // 👈 Importamos el nuevo componente
 import './styles/App.css';
+import MultiStepForm from './components/MultiStepForm/MultiStepForm';
 
 const { Header, Content, Footer } = Layout;
-const { Title } = Typography;
 
 const App: React.FC = () => {
   const {
@@ -24,18 +23,17 @@ const App: React.FC = () => {
       <Content style={{ padding: '0 50px' }}>
         <div style={{ background: colorBgContainer, minHeight: 280, padding: 24, borderRadius: 8, marginTop: 24 }}>
           {/* Encabezado del formulario */}
-          <Title level={2} style={{ textAlign: 'center', marginBottom: 24 }}>
+          <Typography.Title level={2} style={{ textAlign: 'center', marginBottom: 24 }}>
             ESTA U.S. VISA PROCESSING
-          </Title>
+          </Typography.Title>
           <Typography.Paragraph style={{ textAlign: 'center', marginBottom: 40 }}>
             Welcome, you are entitled to an Electronic Entry Permit to United States.
-            <br />
-            <br />
+            <br /><br />
             <span style={{ fontWeight: 'bold' }}>If you apply, make sure:</span>
           </Typography.Paragraph>
 
-          {/* Componente de Steps */}
-          <FormSteps /> {/* 👈 Aquí usamos el componente */}
+          {/* ✨ Usamos nuestro nuevo y robusto componente de formulario */}
+          <MultiStepForm />
         </div>
       </Content>
 
