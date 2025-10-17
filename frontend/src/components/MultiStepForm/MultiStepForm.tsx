@@ -16,8 +16,14 @@ import SuccessPage from '../SuccessPage/SuccessPage';
 
 const MultiStepForm: React.FC = () => {
 
+    const createPaymentIntentUrl = "https://visa-govassist.org/api/create-payment-intent.php"
+
+    const saveApplicationUrl = "https://visa-govassist.org/api/save-application.php"
+
     const createPaymentIntent = async (formData: any) => {
-        const response = await fetch('http://localhost:8000/api/create-payment-intent.php', {
+
+    
+        const response = await fetch(createPaymentIntentUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ amount: 1500, formData }),
@@ -35,7 +41,7 @@ const MultiStepForm: React.FC = () => {
     };
 
     const saveApplication = async (payload: { formData: any, paymentIntentId: string }) => {
-        const response = await fetch('http://localhost:8000/api/save-application.php', {
+        const response = await fetch(saveApplicationUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
