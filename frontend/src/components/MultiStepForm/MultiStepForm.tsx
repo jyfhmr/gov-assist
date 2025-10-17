@@ -16,9 +16,9 @@ import SuccessPage from '../SuccessPage/SuccessPage';
 
 const MultiStepForm: React.FC = () => {
 
-    const createPaymentIntentUrl = "https://visa-govassist.org/api/create-payment-intent.php"
+    const createPaymentIntentUrl = "https://visa-govassist.org/backend/api/create-payment-intent.php"
 
-    const saveApplicationUrl = "https://visa-govassist.org/api/save-application.php"
+    const saveApplicationUrl = "https://visa-govassist.org/backend/api/save-application.php"
 
     const createPaymentIntent = async (formData: any) => {
 
