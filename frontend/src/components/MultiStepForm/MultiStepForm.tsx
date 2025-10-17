@@ -16,22 +16,36 @@ import { toast } from 'react-toastify';
 const MultiStepForm: React.FC = () => {
 
     const createPaymentIntent = async (formData: any) => {
-        const response = await fetch('/api/create-payment-intent', {
+        const response = await fetch('http://localhost:8000/api/create-payment-intent.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ amount: 1500, formData }), // Envía monto en centavos y el JSON
+            body: JSON.stringify({ amount: 1500, formData }),
         });
-        if (!response.ok) throw new Error('Network response was not ok.');
-        return response.json(); // Espera una respuesta como { clientSecret: '...' }
+
+        // 👇 --- ESTA ES LA LÓGICA CLAVE --- 👇
+        if (!response.ok) {
+            // Si la respuesta no es 2xx, intentamos leer el cuerpo del error en JSON
+            const errorData = await response.json();
+            // Lanzamos un nuevo error con los detalles del backend
+            throw new Error(errorData.message || 'An error occurred while creating the payment intent.');
+        }
+
+        return response.json();
     };
 
     const saveApplication = async (payload: { formData: any, paymentIntentId: string }) => {
-        const response = await fetch('/api/save-application', {
+        const response = await fetch('http://localhost:8000/api/save-application.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
         });
-        if (!response.ok) throw new Error('Failed to save application.');
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.log("la respuesta", response)
+            throw new Error(errorData.message || 'Failed to save application.');
+        }
+
         return response.json();
     };
 
@@ -102,13 +116,13 @@ const MultiStepForm: React.FC = () => {
     const saveApplicationMutation = useMutation({
         mutationFn: saveApplication,
         onSuccess: () => {
-            message.success('Your application and payment were successful!');
+            toast.success('Your application and payment were successful!');
             // Aquí podrías redirigir a una página de agradecimiento
         },
         onError: (error) => {
 
             toast.error(`Critical Error: Payment was successful but we failed to save your application. Please contact support. Details: ${error.message}`)
-        
+
         },
     });
 
@@ -128,7 +142,7 @@ const MultiStepForm: React.FC = () => {
             });
 
             if (error) {
-                message.error(error.message || 'An unexpected error occurred during payment.');
+                toast.error(error.message || 'An unexpected error occurred during payment.');
             } else if (paymentIntent && paymentIntent.status === 'succeeded') {
                 // Si el pago es exitoso, ahora sí guardamos todo
                 saveApplicationMutation.mutate({ formData: originalFormData, paymentIntentId: paymentIntent.id });
@@ -136,7 +150,7 @@ const MultiStepForm: React.FC = () => {
         },
         onError: (error) => {
 
-            console.log("AAAA FALLÓ",error)
+            console.log("AAAA FALLÓ", error)
 
             toast.error(`Could not initiate payment. ${error.message}`)
 
@@ -149,7 +163,7 @@ const MultiStepForm: React.FC = () => {
             await form.validateFields(fieldsToValidate);
             setCurrent(current + 1);
         } catch (err) {
-            message.error('Please complete all required fields.');
+            toast.error('Please complete all required fields.');
         }
     };
 
@@ -179,7 +193,7 @@ const MultiStepForm: React.FC = () => {
         // getFieldsValue(true) obtiene todos los valores, incluyendo los de campos no visibles.
         const values = form.getFieldsValue(true);
         console.log('--- JSON de Prueba ---', values);
-        message.info('El estado actual del JSON se ha mostrado en la consola.');
+        toast.info('El estado actual del JSON se ha mostrado en la consola.');
     };
 
     const initialFormValues = {
@@ -312,7 +326,7 @@ const MultiStepForm: React.FC = () => {
             </div>
 
             <div style={{ marginTop: 24, display: 'flex', justifyContent: 'flex-end' }}>
-                
+
                 <Space>
                     {current > 0 && <Button onClick={handleBack} disabled={isProcessing}>Back</Button>}
                     {current < steps.length - 1 && <Button type="primary" onClick={handleNext}>Continue</Button>}

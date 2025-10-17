@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Elements } from '@stripe/react-stripe-js';
 import { ToastContainer } from 'react-toastify';
 
-const stripePromise = loadStripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY');
+const stripePromise = loadStripe('pk_test_51SIYzFPMKaGw34d8CfRtG77qqYbv9L7ik67JPFSkW1s2PahBIkOvDaPhxTGJbiPWZCTToD3MA3IKJbTrEznyZCwm00Al3B6j9V');
 
 const queryClient = new QueryClient();
 
