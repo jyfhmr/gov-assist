@@ -9,12 +9,11 @@ import {
     Typography,
     Radio,
     Space,
-    Tooltip
 } from 'antd';
-import { QuestionCircleOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import CountrySelect from '../CountrySelect/CountrySelect';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 const { Option } = Select;
 
 const PassportForm: React.FC = () => {

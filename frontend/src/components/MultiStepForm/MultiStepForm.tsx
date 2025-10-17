@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Steps, Button, Form, message, theme } from 'antd';
+import { Steps, Button, Form, message, theme, Space } from 'antd';
 import ApplicantForm from '../ApplicantForm/ApplicantForm';
 import PassportForm from '../PassportForm/PassportForm';
 import EligibilityForm from '../EligibilityForm/EligibilityForm';
@@ -8,11 +8,42 @@ import SocialMediaForm from '../SocialMediaForm/SocialMediaForm';
 import EmploymentForm from '../EmploymentForm/EmploymentForm';
 import TravelForm from '../TravelForm/TravelForm';
 import ReviewForm from '../ReviewForm/ReviewForm';
+import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import { useMutation } from '@tanstack/react-query';
+import PaymentForm from '../PaymentForm/PaymentForm';
+import { toast } from 'react-toastify';
 
 const MultiStepForm: React.FC = () => {
+
+    const createPaymentIntent = async (formData: any) => {
+        const response = await fetch('/api/create-payment-intent', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: 1500, formData }), // Envía monto en centavos y el JSON
+        });
+        if (!response.ok) throw new Error('Network response was not ok.');
+        return response.json(); // Espera una respuesta como { clientSecret: '...' }
+    };
+
+    const saveApplication = async (payload: { formData: any, paymentIntentId: string }) => {
+        const response = await fetch('/api/save-application', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+        });
+        if (!response.ok) throw new Error('Failed to save application.');
+        return response.json();
+    };
+
     const [form] = Form.useForm();
+
     const [current, setCurrent] = useState(0);
+
     const { token } = theme.useToken();
+
+    const stripe = useStripe(); // Hook de Stripe para interactuar con la API
+
+    const elements = useElements();
 
     const steps = [
         {
@@ -65,7 +96,50 @@ const MultiStepForm: React.FC = () => {
             content: <ReviewForm />,
             fields: ['declarationAgree', 'thirdPartyAgree', 'securityQuestion', 'securityAnswer'],
         },
+        { title: 'Payment', content: <PaymentForm />, fields: [] },
     ];
+
+    const saveApplicationMutation = useMutation({
+        mutationFn: saveApplication,
+        onSuccess: () => {
+            message.success('Your application and payment were successful!');
+            // Aquí podrías redirigir a una página de agradecimiento
+        },
+        onError: (error) => {
+            message.error(`Critical Error: Payment was successful but we failed to save your application. Please contact support. Details: ${error.message}`);
+        },
+    });
+
+    // Mutación para crear el Payment Intent
+    const createPaymentIntentMutation = useMutation({
+        mutationFn: createPaymentIntent,
+        onSuccess: async (data, originalFormData) => {
+            const { clientSecret } = data;
+            if (!stripe || !elements) return;
+
+            const cardElement = elements.getElement(CardElement);
+            if (!cardElement) return;
+
+            // Confirma el pago con Stripe
+            const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: { card: cardElement },
+            });
+
+            if (error) {
+                message.error(error.message || 'An unexpected error occurred during payment.');
+            } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+                // Si el pago es exitoso, ahora sí guardamos todo
+                saveApplicationMutation.mutate({ formData: originalFormData, paymentIntentId: paymentIntent.id });
+            }
+        },
+        onError: (error) => {
+            
+            console.log("AAAA FALLÓ",error)
+
+            toast.error(`Could not initiate payment. ${error.message}`)
+
+        },
+    });
 
     const handleNext = async () => {
         try {
@@ -82,9 +156,13 @@ const MultiStepForm: React.FC = () => {
     };
 
     const onFinish = (values: any) => {
-        // ✨ AHORA SÍ: 'values' tendrá todos los datos de todos los pasos.
+
         console.log('JSON final con todos los datos:', values);
-        message.success('Form submitted successfully!');
+
+        handleTestJson()
+
+        createPaymentIntentMutation.mutate(values);
+
     };
 
     const contentStyle: React.CSSProperties = {
@@ -211,14 +289,17 @@ const MultiStepForm: React.FC = () => {
         securityAnswer: '',
     };
 
+    const isProcessing = createPaymentIntentMutation.isPending || saveApplicationMutation.isPending;
+
     return (
+
         <Form form={form} onFinish={onFinish} layout="vertical" initialValues={initialFormValues}>
+
             <Steps
                 current={current}
                 items={steps.map((item) => ({ key: item.title, title: item.title }))}
             />
 
-            {/* --- CAMBIO CLAVE AQUÍ --- */}
             <div style={contentStyle}>
                 {/* Mapeamos TODOS los pasos y ocultamos los inactivos */}
                 {steps.map((step, index) => (
@@ -229,31 +310,19 @@ const MultiStepForm: React.FC = () => {
             </div>
 
             <div style={{ marginTop: 24, display: 'flex', justifyContent: 'flex-end' }}>
-                {current > 0 && (
-                    <Button style={{ margin: '0 8px' }} onClick={handleBack}>
-                        Back
-                    </Button>
-                )}
+                
+                <Space>
+                    {current > 0 && <Button onClick={handleBack} disabled={isProcessing}>Back</Button>}
+                    {current < steps.length - 1 && <Button type="primary" onClick={handleNext}>Continue</Button>}
+                    {current === steps.length - 1 && (
+                        <Button type="primary" htmlType="submit" loading={isProcessing}>
+                            {isProcessing ? 'Processing...' : 'Pay & Submit'}
+                        </Button>
+                    )}
+                </Space>
 
-                {/* --- INICIO DEL CAMBIO EN LOS BOTONES --- */}
-                {current === steps.length - 1 && (
-                    <Button onClick={handleTestJson} style={{ marginLeft: 8 }}>
-                        Test JSON
-                    </Button>
-                )}
-                {/* --- FIN DEL CAMBIO EN LOS BOTONES --- */}
-
-                {current < steps.length - 1 && (
-                    <Button type="primary" onClick={handleNext}>
-                        Continue
-                    </Button>
-                )}
-                {current === steps.length - 1 && (
-                    <Button type="primary" htmlType="submit">
-                        Proceed to Payment
-                    </Button>
-                )}
             </div>
+
         </Form>
     );
 };
