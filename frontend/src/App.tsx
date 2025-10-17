@@ -30,7 +30,7 @@ const App: React.FC = () => {
         </Header>
 
         {/* Main Content Area */}
-        <Content style={{ padding: '0 50px' }}>
+        <Content className="main-content">
           <div style={{ background: colorBgContainer, minHeight: 280, padding: 24, borderRadius: 8, marginTop: 24 }}>
             {/* Encabezado del formulario */}
             <Typography.Title level={2} style={{ textAlign: 'center', marginBottom: 24 }}>
@@ -51,8 +51,8 @@ const App: React.FC = () => {
         </Content>
 
         {/* Footer */}
-        <Footer style={{ textAlign: 'left', backgroundColor: '#0A2540', color: 'white', padding: '24px 50px' }}>
-          <div style={{ marginBottom: '16px', fontSize: '20px', fontWeight: 'bold' }}>
+        <Footer className="main-footer">
+          <div style={{ marginBottom: '16px', fontSize: '20px', fontWeight: 'bold' , color:"white"}}>
             GovAssist
           </div>
           <Typography.Paragraph style={{ color: 'rgba(255, 255, 255, 0.65)', fontSize: '12px' }}>

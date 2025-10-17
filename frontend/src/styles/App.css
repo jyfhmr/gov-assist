@@ -36,3 +36,37 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* Default styles for desktop */
+.main-content {
+  padding: 0 50px;
+  transition: padding 0.2s ease-in-out; /* Optional: for a smooth transition */
+}
+
+.form-container {
+  padding: 24px;
+}
+
+.main-footer {
+  padding: 24px 50px;
+  transition: padding 0.2s ease-in-out; /* Optional: for a smooth transition */
+  background-color: #0A2540;
+}
+
+
+/* --- Media Query for Mobile Devices --- */
+/* This will apply when the screen width is 768px or less */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 0 15px; /* Reduces side padding, making content wider */
+  }
+
+  .form-container {
+    padding: 16px; /* Slightly reduces internal padding */
+  }
+
+  .main-footer {
+    padding: 24px 15px; /* Matches the content padding */
+  }
+}
