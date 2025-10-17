@@ -106,7 +106,9 @@ const MultiStepForm: React.FC = () => {
             // Aquí podrías redirigir a una página de agradecimiento
         },
         onError: (error) => {
-            message.error(`Critical Error: Payment was successful but we failed to save your application. Please contact support. Details: ${error.message}`);
+
+            toast.error(`Critical Error: Payment was successful but we failed to save your application. Please contact support. Details: ${error.message}`)
+        
         },
     });
 
@@ -133,7 +135,7 @@ const MultiStepForm: React.FC = () => {
             }
         },
         onError: (error) => {
-            
+
             console.log("AAAA FALLÓ",error)
 
             toast.error(`Could not initiate payment. ${error.message}`)
