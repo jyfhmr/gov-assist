@@ -12,6 +12,7 @@ import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { useMutation } from '@tanstack/react-query';
 import PaymentForm from '../PaymentForm/PaymentForm';
 import { toast } from 'react-toastify';
+import SuccessPage from '../SuccessPage/SuccessPage';
 
 const MultiStepForm: React.FC = () => {
 
@@ -58,6 +59,12 @@ const MultiStepForm: React.FC = () => {
     const stripe = useStripe(); // Hook de Stripe para interactuar con la API
 
     const elements = useElements();
+
+    const [submissionStatus, setSubmissionStatus] = useState({
+        isSuccess: false,
+        applicationId: '',
+        email: '',
+    });
 
     const steps = [
         {
@@ -115,9 +122,16 @@ const MultiStepForm: React.FC = () => {
 
     const saveApplicationMutation = useMutation({
         mutationFn: saveApplication,
-        onSuccess: () => {
+        onSuccess: (data, variables) => {
+
             toast.success('Your application and payment were successful!');
-            // Aquí podrías redirigir a una página de agradecimiento
+
+            setSubmissionStatus({
+                isSuccess: true,
+                applicationId: data.application_id, // Assuming your backend returns this
+                email: variables.formData.email,   // Get email from the original form data
+            });
+
         },
         onError: (error) => {
 
@@ -306,6 +320,16 @@ const MultiStepForm: React.FC = () => {
     };
 
     const isProcessing = createPaymentIntentMutation.isPending || saveApplicationMutation.isPending;
+
+    //Si el cliente pagó y salió de pinga
+    if (submissionStatus.isSuccess) {
+        return (
+            <SuccessPage
+                applicationId={submissionStatus.applicationId}
+                email={submissionStatus.email}
+            />
+        );
+    }
 
     return (
 
