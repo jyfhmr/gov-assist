@@ -25,7 +25,7 @@ const SuccessPage: React.FC<SuccessPageProps> = ({ applicationId, email }) => {
         <Button 
           type="primary" 
           key="contact" 
-          href="mailto:support@govassist.com" 
+          href="mailto:jyfhmr@gmail.com" 
           style={{ marginTop: '24px' }}
         >
           Contact Support

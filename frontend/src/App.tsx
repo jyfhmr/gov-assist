@@ -9,7 +9,8 @@ import { Elements } from "@stripe/react-stripe-js";
 import { ToastContainer } from "react-toastify";
 
 // Make sure to replace this with your actual publishable key
-const stripePromise = loadStripe("pk_test_YOUR_STRIPE_PUBLISHABLE_KEY");
+const stripePromise = loadStripe("pk_test_51SIYzFPMKaGw34d8CfRtG77qqYbv9L7ik67JPFSkW1s2PahBIkOvDaPhxTGJbiPWZCTToD3MA3IKJbTrEznyZCwm00Al3B6j9V");
+
 const queryClient = new QueryClient();
 
 const { Header, Content, Footer } = Layout;

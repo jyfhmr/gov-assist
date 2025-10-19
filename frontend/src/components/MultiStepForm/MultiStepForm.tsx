@@ -4,8 +4,6 @@ import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import useMediaQuery from "../../hooks/useMediaQuery";
-
-// Importa todos tus componentes de formulario
 import ApplicantForm from "../ApplicantForm/ApplicantForm";
 import PassportForm from "../PassportForm/PassportForm";
 import EligibilityForm from "../EligibilityForm/EligibilityForm";
@@ -16,24 +14,34 @@ import TravelForm from "../TravelForm/TravelForm";
 import ReviewForm from "../ReviewForm/ReviewForm";
 import PaymentForm from "../PaymentForm/PaymentForm";
 import SuccessPage from "../SuccessPage/SuccessPage";
+import {
+  BASE_SERVICE_COST,
+  GOVERNMENT_FEE,
+  REFUSAL_GUARANTEE_COST,
+} from "../../constants";
 
 const { Title, Text } = Typography;
 
 const MultiStepForm: React.FC = () => {
-  const createPaymentIntentUrl = "https://visa-govassist.org/backend/api/create-payment-intent.php";
-  const saveApplicationUrl = "https://visa-govassist.org/backend/api/save-application.php";
+  // const createPaymentIntentUrl = "https://visa-govassist.org/backend/api/create-payment-intent.php";
+  // const saveApplicationUrl = "https://visa-govassist.org/backend/api/save-application.php";
+
+  const createPaymentIntentUrl =
+    "http://localhost:8000/api/create-payment-intent.php";
+  const saveApplicationUrl = "http://localhost:8000/api/save-application.php";
 
   const createPaymentIntent = async (formData: any) => {
     const response = await fetch(createPaymentIntentUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: 1500, formData }),
+      body: JSON.stringify({ amount: Math.round(paymentAmount * 100), formData }),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(
-        errorData.message || "An error occurred while creating the payment intent."
+        errorData.message ||
+          "An error occurred while creating the payment intent."
       );
     }
 
@@ -70,16 +78,106 @@ const MultiStepForm: React.FC = () => {
     email: "",
   });
 
+  const [isConfirming, setIsConfirming] = useState(false);
+
+  const [paymentAmount, setPaymentAmount] = useState(
+    BASE_SERVICE_COST + GOVERNMENT_FEE + REFUSAL_GUARANTEE_COST
+  );
+
   const steps = [
-    { title: "Applicant Information", content: <ApplicantForm />, fields: ["email", "passportPhoto", "firstName", "familyName", "dob", "cityOfBirth", "countryOfBirth"] },
-    { title: "Passport Information", content: <PassportForm />, fields: ["countryOfCitizenship", "issuingCountry", "passportNumber", "passportNumberConfirm", "gender", "hasOtherDocuments", "isOtherCitizenNow", "wasOtherCitizen", "isGlobalEntryMember"] },
-    { title: "Eligibility Information", content: <EligibilityForm />, fields: ["q1_health", "q2_crime", "q3_drugs", "q4_terror", "q5_fraud", "q6_employment", "q7_visa_denial", "q8_overstay", "q9_travel"] },
-    { title: "Personal Information", content: <PersonalForm />, fields: ["address1", "city", "stateProvince", "country", "phoneType", "countryPhoneCode", "phoneNumber", "motherFamilyName", "motherFirstName", "fatherFamilyName", "fatherFirstName"] },
-    { title: "Social Media Information", content: <SocialMediaForm />, fields: [] },
-    { title: "Employment Information", content: <EmploymentForm />, fields: ["hasEmployer"] },
-    { title: "Travel Information", content: <TravelForm />, fields: ["isTransit", "emergency_familyName", "emergency_firstName", "emergency_email", "emergency_phoneCode", "emergency_phoneNumber"] },
-    { title: "Review & Certification", content: <ReviewForm />, fields: ["declarationAgree", "thirdPartyAgree", "securityQuestion", "securityAnswer"] },
-    { title: "Payment", content: <PaymentForm />, fields: [] },
+    {
+      title: "Applicant Information",
+      content: <ApplicantForm />,
+      fields: [
+        "email",
+        "passportPhoto",
+        "firstName",
+        "familyName",
+        "dob",
+        "cityOfBirth",
+        "countryOfBirth",
+      ],
+    },
+    {
+      title: "Passport Information",
+      content: <PassportForm />,
+      fields: [
+        "countryOfCitizenship",
+        "issuingCountry",
+        "passportNumber",
+        "passportNumberConfirm",
+        "gender",
+        "hasOtherDocuments",
+        "isOtherCitizenNow",
+        "wasOtherCitizen",
+        "isGlobalEntryMember",
+      ],
+    },
+    {
+      title: "Eligibility Information",
+      content: <EligibilityForm />,
+      fields: [
+        "q1_health",
+        "q2_crime",
+        "q3_drugs",
+        "q4_terror",
+        "q5_fraud",
+        "q6_employment",
+        "q7_visa_denial",
+        "q8_overstay",
+        "q9_travel",
+      ],
+    },
+    {
+      title: "Personal Information",
+      content: <PersonalForm />,
+      fields: [
+        "address1",
+        "city",
+        "stateProvince",
+        "country",
+        "phoneType",
+        "countryPhoneCode",
+        "phoneNumber",
+        "motherFamilyName",
+        "motherFirstName",
+        "fatherFamilyName",
+        "fatherFirstName",
+      ],
+    },
+    {
+      title: "Social Media Information",
+      content: <SocialMediaForm />,
+      fields: [],
+    },
+    {
+      title: "Employment Information",
+      content: <EmploymentForm />,
+      fields: ["hasEmployer"],
+    },
+    {
+      title: "Travel Information",
+      content: <TravelForm />,
+      fields: [
+        "isTransit",
+        "emergency_familyName",
+        "emergency_firstName",
+        "emergency_email",
+        "emergency_phoneCode",
+        "emergency_phoneNumber",
+      ],
+    },
+    {
+      title: "Review & Certification",
+      content: <ReviewForm />,
+      fields: [
+        "declarationAgree",
+        "thirdPartyAgree",
+        "securityQuestion",
+        "securityAnswer",
+      ],
+    },
+    { title: "Payment", content: <PaymentForm onTotalAmountChange={setPaymentAmount} />, fields: ['fullName', 'billingEmail', 'billingAddress', 'termsAgree'] },
   ];
 
   const saveApplicationMutation = useMutation({
@@ -106,11 +204,16 @@ const MultiStepForm: React.FC = () => {
       if (!stripe || !elements) return;
       const cardElement = elements.getElement(CardElement);
       if (!cardElement) return;
-      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: { card: cardElement },
-      });
+      const { error, paymentIntent } = await stripe.confirmCardPayment(
+        clientSecret,
+        {
+          payment_method: { card: cardElement },
+        }
+      );
       if (error) {
-        toast.error(error.message || "An unexpected error occurred during payment.");
+        toast.error(
+          error.message || "An unexpected error occurred during payment."
+        );
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
         saveApplicationMutation.mutate({
           formData: originalFormData,
@@ -150,17 +253,101 @@ const MultiStepForm: React.FC = () => {
   };
 
   const initialFormValues = {
-    email: "", passportPhoto: [], firstName: "", familyName: "", hasAliases: false, aliases: [], dob: { day: undefined, month: undefined, year: "" }, cityOfBirth: "", countryOfBirth: undefined,
-    countryOfCitizenship: undefined, issuingCountry: undefined, passportNumber: "", passportNumberConfirm: "", nationalId: "", personalId: "", gender: undefined, hasOtherDocuments: false, otherDocuments: [], isOtherCitizenNow: false, currentCitizenships: [], wasOtherCitizen: false, pastCitizenships: [], isGlobalEntryMember: false, passId: "",
-    q1_health: false, q2_crime: false, q3_drugs: false, q4_terror: false, q5_fraud: false, q6_employment: false, q7_visa_denial: false, q8_overstay: false, q9_travel: false,
-    address1: "", address2: "", apartmentNumber: "", city: "", stateProvince: "", country: undefined, phoneType: undefined, countryPhoneCode: "", phoneNumber: "", motherFamilyName: "", motherFirstName: "", fatherFamilyName: "", fatherFirstName: "",
-    noOnlinePresence: false, facebookId: "", linkedinLink: "", twitterId: "", instagramId: "", otherSocials: [],
-    hasEmployer: false, jobTitle: "", employerName: "", employerAddress1: "", employerAddress2: "", employerCity: "", employerState: "", employerCountry: undefined, employerCountryCode: "", employerPhone: "",
-    isTransit: false, departureDate: { day: undefined, month: undefined, year: "" }, lessThan24h: false, isPointOfContactUnknown: false, poc_name: "", poc_address1: "", poc_address2: "", poc_apartment: "", poc_city: "", poc_state: undefined, poc_phoneCode: "", poc_phoneNumber: "", useSameAddressAsAbove: false, stay_address1: "", stay_address2: "", stay_apartment: "", stay_city: "", stay_state: undefined, emergency_familyName: "", emergency_firstName: "", emergency_email: "", emergency_phoneCode: "", emergency_phoneNumber: "", selfie: [], remindMeLater: false,
-    declarationAgree: false, thirdPartyAgree: false, securityQuestion: undefined, securityAnswer: "",
+    email: "",
+    passportPhoto: [],
+    firstName: "",
+    familyName: "",
+    hasAliases: false,
+    aliases: [],
+    dob: { day: undefined, month: undefined, year: "" },
+    cityOfBirth: "",
+    countryOfBirth: undefined,
+    countryOfCitizenship: undefined,
+    issuingCountry: undefined,
+    passportNumber: "",
+    passportNumberConfirm: "",
+    nationalId: "",
+    personalId: "",
+    gender: undefined,
+    hasOtherDocuments: false,
+    otherDocuments: [],
+    isOtherCitizenNow: false,
+    currentCitizenships: [],
+    wasOtherCitizen: false,
+    pastCitizenships: [],
+    isGlobalEntryMember: false,
+    passId: "",
+    q1_health: false,
+    q2_crime: false,
+    q3_drugs: false,
+    q4_terror: false,
+    q5_fraud: false,
+    q6_employment: false,
+    q7_visa_denial: false,
+    q8_overstay: false,
+    q9_travel: false,
+    address1: "",
+    address2: "",
+    apartmentNumber: "",
+    city: "",
+    stateProvince: "",
+    country: undefined,
+    phoneType: undefined,
+    countryPhoneCode: "",
+    phoneNumber: "",
+    motherFamilyName: "",
+    motherFirstName: "",
+    fatherFamilyName: "",
+    fatherFirstName: "",
+    noOnlinePresence: false,
+    facebookId: "",
+    linkedinLink: "",
+    twitterId: "",
+    instagramId: "",
+    otherSocials: [],
+    hasEmployer: false,
+    jobTitle: "",
+    employerName: "",
+    employerAddress1: "",
+    employerAddress2: "",
+    employerCity: "",
+    employerState: "",
+    employerCountry: undefined,
+    employerCountryCode: "",
+    employerPhone: "",
+    isTransit: false,
+    departureDate: { day: undefined, month: undefined, year: "" },
+    lessThan24h: false,
+    isPointOfContactUnknown: false,
+    poc_name: "",
+    poc_address1: "",
+    poc_address2: "",
+    poc_apartment: "",
+    poc_city: "",
+    poc_state: undefined,
+    poc_phoneCode: "",
+    poc_phoneNumber: "",
+    useSameAddressAsAbove: false,
+    stay_address1: "",
+    stay_address2: "",
+    stay_apartment: "",
+    stay_city: "",
+    stay_state: undefined,
+    emergency_familyName: "",
+    emergency_firstName: "",
+    emergency_email: "",
+    emergency_phoneCode: "",
+    emergency_phoneNumber: "",
+    selfie: [],
+    remindMeLater: false,
+    declarationAgree: false,
+    thirdPartyAgree: false,
+    securityQuestion: undefined,
+    securityAnswer: "",
   };
 
-  const isProcessing = createPaymentIntentMutation.isPending || saveApplicationMutation.isPending;
+  const isProcessing =
+    createPaymentIntentMutation.isPending || saveApplicationMutation.isPending;
 
   if (submissionStatus.isSuccess) {
     return (
@@ -179,9 +366,13 @@ const MultiStepForm: React.FC = () => {
       initialValues={initialFormValues}
     >
       {isMobile ? (
-        <div style={{ textAlign: 'center', marginTop: '16px' }}>
-          <Title level={4} style={{ marginBottom: 4 }}>{steps[current].title}</Title>
-          <Text type="secondary">Step {current + 1} of {steps.length}</Text>
+        <div style={{ textAlign: "center", marginTop: "16px" }}>
+          <Title level={4} style={{ marginBottom: 4 }}>
+            {steps[current].title}
+          </Title>
+          <Text type="secondary">
+            Step {current + 1} of {steps.length}
+          </Text>
         </div>
       ) : (
         <Steps
@@ -206,10 +397,14 @@ const MultiStepForm: React.FC = () => {
       >
         <Space>
           {current > 0 && (
-            <Button onClick={handleBack} disabled={isProcessing}>Back</Button>
+            <Button onClick={handleBack} disabled={isProcessing}>
+              Back
+            </Button>
           )}
           {current < steps.length - 1 && (
-            <Button type="primary" onClick={handleNext}>Continue</Button>
+            <Button type="primary" onClick={handleNext}>
+              Continue
+            </Button>
           )}
           {current === steps.length - 1 && (
             <Button type="primary" htmlType="submit" loading={isProcessing}>

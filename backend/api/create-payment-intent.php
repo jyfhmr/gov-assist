@@ -1,13 +1,10 @@
 <?php
-// ✨ 1. FORZAR LA VISUALIZACIÓN DE ERRORES (SOLO PARA DESARROLLO)
-// Coloca esto al principio de tus scripts para ver los errores detallados.
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../config/database.php';
 
-// --- Cabeceras CORS ---
-header("Access-Control-Allow-Origin: http://localhost:3002");
+header("Access-Control-Allow-Origin: http://localhost:3000"); // Cambia esto en producción
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Max-Age: 3600");
@@ -24,7 +21,12 @@ try {
     $json_data = file_get_contents('php://input');
     $data = json_decode($json_data);
 
-    $amount_in_cents = 1500;
+    // ✨ ¡AQUÍ ESTÁ EL CAMBIO! Usamos el monto que nos envía el frontend
+    if (!isset($data->amount) || !is_numeric($data->amount) || $data->amount <= 0) {
+        throw new Exception("Amount is missing or invalid.");
+    }
+
+    $amount_in_cents = $data->amount;
 
     $paymentIntent = \Stripe\PaymentIntent::create([
         'amount' => $amount_in_cents,
@@ -34,23 +36,10 @@ try {
 
     echo json_encode(['clientSecret' => $paymentIntent->client_secret]);
 
-} 
-// ✨ 2. CAPTURA DE ERRORES ESPECÍFICOS DE STRIPE
-catch (\Stripe\Exception\ApiErrorException $e) {
-    // Esto captura errores de la API de Stripe (ej: clave inválida, monto incorrecto, etc.)
+} catch (\Stripe\Exception\ApiErrorException $e) {
     http_response_code($e->getHttpStatus());
-    echo json_encode([
-        'error' => 'Stripe API Error',
-        'message' => $e->getMessage(),
-        'stripe_code' => $e->getStripeCode()
-    ]);
+    echo json_encode(['error' => 'Stripe API Error', 'message' => $e->getMessage(), 'stripe_code' => $e->getStripeCode()]);
 } catch (Exception $e) {
-    // Captura cualquier otro error general
     http_response_code(500);
-    echo json_encode([
-        'error' => 'Generic Error',
-        'message' => $e->getMessage(),
-        'file' => $e->getFile(),
-        'line' => $e->getLine()
-    ]);
+    echo json_encode(['error' => 'Generic Error', 'message' => $e->getMessage(), 'file' => $e->getFile(), 'line' => $e->getLine()]);
 }
