@@ -32,17 +32,17 @@ const EmploymentForm: React.FC = () => {
       {hasEmployer && (
         <>
           <Row gutter={24}>
-            <Col span={8}>
+            <Col xs={24} lg={8}>
               <Form.Item name="jobTitle" label="JOB TITLE" rules={[{ required: true }]}>
                 <Input placeholder="Job Title" />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col xs={24} lg={8}>
               <Form.Item name="employerName" label="EMPLOYER NAME *" rules={[{ required: true }]}>
                 <Input placeholder="Employer name" />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col xs={24} lg={8}>
               <Form.Item name="employerAddress1" label="ADDRESS LINE 1 *" rules={[{ required: true }]}>
                 <Input placeholder="Address Line 1" />
               </Form.Item>
@@ -50,17 +50,17 @@ const EmploymentForm: React.FC = () => {
           </Row>
 
           <Row gutter={24}>
-            <Col span={8}>
+            <Col xs={24} lg={8}>
               <Form.Item name="employerAddress2" label="ADDRESS LINE 2">
                 <Input placeholder="Address Line 2" />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col xs={24} lg={8}>
               <Form.Item name="employerCity" label="EMPLOYER CITY *" rules={[{ required: true }]}>
                 <Input placeholder="Employer City" />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col xs={24} lg={8}>
               <Form.Item name="employerState" label="STATE/PROVINCE/REGION *" rules={[{ required: true }]}>
                 <Input placeholder="State/Province/Region" />
               </Form.Item>
@@ -68,12 +68,12 @@ const EmploymentForm: React.FC = () => {
           </Row>
           
           <Row gutter={24}>
-            <Col span={12}>
+            <Col xs={24} lg={12}>
               <Form.Item name="employerCountry" label="COUNTRY *" rules={[{ required: true }]}>
                 <CountrySelect placeholder="Select Country" />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col xs={24} lg={12}>
               <Form.Item label="COUNTRY+PHONE *" required>
                 <Input.Group compact>
                   <Form.Item name="employerCountryCode" noStyle rules={[{ required: true }]}>

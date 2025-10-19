@@ -8,7 +8,6 @@ import {
   Col,
   Typography,
   Checkbox,
-  Space
 } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 
@@ -36,22 +35,22 @@ const SocialMediaForm: React.FC = () => {
       </Form.Item>
 
       <Row gutter={24}>
-        <Col span={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Form.Item name="facebookId" label="FACEBOOK PAGE ID">
             <Input placeholder="Facebook Page ID" disabled={noOnlinePresence} />
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Form.Item name="linkedinLink" label="LINKEDIN PROFILE LINK">
             <Input placeholder="LinkedIn Profile Link" disabled={noOnlinePresence} />
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Form.Item name="twitterId" label="TWITTER USER ID">
             <Input placeholder="Twitter User ID" disabled={noOnlinePresence} />
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Form.Item name="instagramId" label="INSTAGRAM USER ID">
             <Input placeholder="Instagram User ID" disabled={noOnlinePresence} />
           </Form.Item>
@@ -64,29 +63,36 @@ const SocialMediaForm: React.FC = () => {
         {(fields, { add, remove }) => (
           <>
             {fields.map(({ key, name, ...restField }) => (
-              <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                <Form.Item
-                  {...restField}
-                  name={[name, 'platform']}
-                  label="PLATFORM"
-                  rules={[{ required: true, message: 'Platform is required' }]}
-                  style={{ width: '250px' }}
-                >
-                  <Select placeholder="Select Platform" disabled={noOnlinePresence}>
-                    {socialPlatforms.map(p => <Option key={p} value={p}>{p}</Option>)}
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  {...restField}
-                  name={[name, 'identifier']}
-                  label="SOCIAL MEDIA IDENTIFIER"
-                  rules={[{ required: true, message: 'Identifier is required' }]}
-                  style={{ width: '350px' }}
-                >
-                  <Input placeholder="Social Media Identifier" disabled={noOnlinePresence} />
-                </Form.Item>
-                <MinusCircleOutlined onClick={() => !noOnlinePresence && remove(name)} />
-              </Space>
+              <Row key={key} gutter={[16, 0]} align="bottom" style={{ marginBottom: 8 }}>
+                <Col xs={24} lg={11}>
+                  <Form.Item
+                    {...restField}
+                    name={[name, 'platform']}
+                    label="PLATFORM"
+                    rules={[{ required: true, message: 'Platform is required' }]}
+                  >
+                    <Select placeholder="Select Platform" disabled={noOnlinePresence}>
+                      {socialPlatforms.map(p => <Option key={p} value={p}>{p}</Option>)}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={11}>
+                  <Form.Item
+                    {...restField}
+                    name={[name, 'identifier']}
+                    label="SOCIAL MEDIA IDENTIFIER"
+                    rules={[{ required: true, message: 'Identifier is required' }]}
+                  >
+                    <Input placeholder="Social Media Identifier" disabled={noOnlinePresence} />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={2} style={{ textAlign: 'center', paddingBottom: '10px' }}>
+                  <MinusCircleOutlined 
+                    onClick={() => !noOnlinePresence && remove(name)} 
+                    style={{ fontSize: '20px', color: '#ff4d4f', cursor: 'pointer' }}
+                  />
+                </Col>
+              </Row>
             ))}
             <Form.Item>
               <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />} disabled={noOnlinePresence}>
