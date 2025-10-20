@@ -27,10 +27,11 @@ const AppHeader: React.FC = () => {
                             src="/images/logo.png"
                             preview={false}
                             alt="VisaGovAssist Logo"
+                            className='header-logo-img'
                         />
-                        <p style={{ color: 'white', fontWeight: 'bold' }} className='headerText'>
+                        <div style={{ color: 'white', fontWeight: 'bold'}} className='headerText'>
                             VisaGovAssist
-                        </p>
+                        </div>
                     </div>
                 </a>
                 

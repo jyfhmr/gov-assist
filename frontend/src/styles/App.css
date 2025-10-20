@@ -54,7 +54,7 @@
   }
 
   .form-container {
-    padding: 16px;
+    padding: 12px;
   }
 
   .main-footer {
@@ -62,7 +62,7 @@
   }
 
   .ant-typography {
-    font-size: 1em !important;
+    font-size: 0.98em !important;
   }
 
   /* 1. Oculta los títulos de los pasos solo en móvil */
@@ -90,7 +90,7 @@
   width: 100%;
   height: auto; /* Permite que la altura se ajuste en móvil */
   background-color: #001529;
-  padding: 16px 24px;
+  padding: 10px 18px;
   transition: all 0.3s ease;
 }
 
@@ -104,7 +104,7 @@
 /* --- Media Query para Móviles --- */
 @media (max-width: 768px) {
   .content-with-fixed-header {
-    padding: 0 15px;
+    padding: 0 12px;
     margin-top: 180px; /* Altura estimada del header en móvil (es más alto porque se apila) */
   }
 }
