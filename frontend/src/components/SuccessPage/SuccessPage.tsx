@@ -1,6 +1,7 @@
 import React from 'react';
 import { Result, Button, Typography } from 'antd';
 import { useTranslation, Trans } from 'react-i18next';
+import { SUPPORT_EMAIL } from '../../constants';
 
 const { Paragraph } = Typography;
 
@@ -35,7 +36,7 @@ const SuccessPage: React.FC<SuccessPageProps> = ({ applicationId, email }) => {
         <Button 
           type="primary" 
           key="contact" 
-          href="mailto:jyfhmr@gmail.com" 
+          href={`mailto:${SUPPORT_EMAIL}`}
           style={{ marginTop: '24px' }}
         >
           {t('success_page_contact_button')}

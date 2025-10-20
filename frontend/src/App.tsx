@@ -10,6 +10,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { ToastContainer } from "react-toastify";
 import AppHeader from "./components/AppHeader/AppHeader";
 import AppFooter from "./components/AppFooter/AppFooter";
+import FloatingSupportButton from "./components/FloatingSupportButton/FloatingSupportButton";
 
 const stripePromise = loadStripe("pk_test_51SIZ05AZKCfcZ9zqrfMPNFagU2g46m5Dz4ZbeEOVP4dEtQgWEgNeqSowl7ILhwijJqZChKzER1SRza0pkaxKY1Jy006dG9KCLx");
 const queryClient = new QueryClient();
@@ -66,6 +67,8 @@ const App: React.FC = () => {
         </Content>
 
         <AppFooter />
+        
+        <FloatingSupportButton />
     
       </Layout>
     </QueryClientProvider>

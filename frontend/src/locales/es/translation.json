@@ -261,5 +261,7 @@
   "success_page_subtitle": "ID de Solicitud: <strong>{{applicationId}}</strong>. Se ha enviado una confirmación y un recibo a <strong>{{email}}</strong>.",
   "success_page_default_email": "su dirección de correo electrónico",
   "success_page_extra_info": "Nuestro equipo revisará ahora su solicitud. Este proceso suele tardar de 3 a 5 días hábiles. Nos pondremos en contacto con usted si se requiere más información.",
-  "success_page_contact_button": "Contactar a Soporte"
+  "success_page_contact_button": "Contactar a Soporte",
+  "//-- FloatingButton --//": "",
+  "floating_button_tooltip": "Contactar a Soporte"
 }

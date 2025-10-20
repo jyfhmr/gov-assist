@@ -261,5 +261,7 @@
   "success_page_subtitle": "Application ID: <strong>{{applicationId}}</strong>. A confirmation and receipt have been sent to <strong>{{email}}</strong>.",
   "success_page_default_email": "your email address",
   "success_page_extra_info": "Our team will now review your application. This process typically takes 3-5 business days. We will contact you if any further information is required.",
-  "success_page_contact_button": "Contact Support"
+  "success_page_contact_button": "Contact Support",
+  "//-- FloatingButton --//": "",
+  "floating_button_tooltip": "Contact Support"
 }
