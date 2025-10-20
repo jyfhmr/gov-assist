@@ -1,86 +1,86 @@
 import React from 'react';
 import { Form, Input, Row, Col, Typography, Radio } from 'antd';
-import CountrySelect from '../CountrySelect/CountrySelect'; // Reutilizamos nuestro componente de país
+import { useTranslation } from 'react-i18next';
+import CountrySelect from '../CountrySelect/CountrySelect';
 
 const { Title, Paragraph } = Typography;
 
 const EmploymentForm: React.FC = () => {
+  const { t } = useTranslation();
   const form = Form.useFormInstance();
-  // Watcher para mostrar/ocultar el formulario de empleo
   const hasEmployer = Form.useWatch('hasEmployer', form);
 
   return (
     <>
-      <Title level={4}>Employment Information</Title>
+      <Title level={4}>{t('employment_form_title')}</Title>
 
       <Form.Item
         name="hasEmployer"
-        label="DO YOU HAVE A CURRENT OR PREVIOUS EMPLOYER? *"
-        rules={[{ required: true, message: 'Please select an option' }]}
+        label={t('employment_form_has_employer_question')}
+        rules={[{ required: true, message: t('validation_required') }]}
       >
         <Radio.Group>
-          <Radio.Button value={false}>No</Radio.Button>
-          <Radio.Button value={true}>Yes</Radio.Button>
+          <Radio.Button value={false}>{t('no')}</Radio.Button>
+          <Radio.Button value={true}>{t('yes')}</Radio.Button>
         </Radio.Group>
       </Form.Item>
       
       <Paragraph type="secondary">
-        If you have never been employed, you may select "NO" to skip these fields, but if you are employed or you were recently employed, it is advised that you fill it in to raise the chances of a successful application.
+        {t('employment_form_description')}
       </Paragraph>
 
-      {/* Formulario condicional */}
       {hasEmployer && (
         <>
           <Row gutter={24}>
             <Col xs={24} lg={8}>
-              <Form.Item name="jobTitle" label="JOB TITLE" rules={[{ required: true }]}>
-                <Input placeholder="Job Title" />
+              <Form.Item name="jobTitle" label={t('employment_form_job_title_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                <Input placeholder={t('employment_form_job_title_placeholder')} />
               </Form.Item>
             </Col>
             <Col xs={24} lg={8}>
-              <Form.Item name="employerName" label="EMPLOYER NAME *" rules={[{ required: true }]}>
-                <Input placeholder="Employer name" />
+              <Form.Item name="employerName" label={t('employment_form_employer_name_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                <Input placeholder={t('employment_form_employer_name_placeholder')} />
               </Form.Item>
             </Col>
             <Col xs={24} lg={8}>
-              <Form.Item name="employerAddress1" label="ADDRESS LINE 1 *" rules={[{ required: true }]}>
-                <Input placeholder="Address Line 1" />
+              <Form.Item name="employerAddress1" label={t('personal_form_address1_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                <Input placeholder={t('personal_form_address1_placeholder')} />
               </Form.Item>
             </Col>
           </Row>
 
           <Row gutter={24}>
             <Col xs={24} lg={8}>
-              <Form.Item name="employerAddress2" label="ADDRESS LINE 2">
-                <Input placeholder="Address Line 2" />
+              <Form.Item name="employerAddress2" label={t('personal_form_address2_label')}>
+                <Input placeholder={t('personal_form_address2_placeholder')} />
               </Form.Item>
             </Col>
             <Col xs={24} lg={8}>
-              <Form.Item name="employerCity" label="EMPLOYER CITY *" rules={[{ required: true }]}>
-                <Input placeholder="Employer City" />
+              <Form.Item name="employerCity" label={t('employment_form_employer_city_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                <Input placeholder={t('employment_form_employer_city_placeholder')} />
               </Form.Item>
             </Col>
             <Col xs={24} lg={8}>
-              <Form.Item name="employerState" label="STATE/PROVINCE/REGION *" rules={[{ required: true }]}>
-                <Input placeholder="State/Province/Region" />
+              <Form.Item name="employerState" label={t('personal_form_state_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                <Input placeholder={t('personal_form_state_placeholder')} />
               </Form.Item>
             </Col>
           </Row>
           
           <Row gutter={24}>
             <Col xs={24} lg={12}>
-              <Form.Item name="employerCountry" label="COUNTRY *" rules={[{ required: true }]}>
-                <CountrySelect placeholder="Select Country" />
+              <Form.Item name="employerCountry" label={t('employment_form_employer_country_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                <CountrySelect placeholder={t('applicant_form_country_birth_placeholder')} />
               </Form.Item>
             </Col>
             <Col xs={24} lg={12}>
-              <Form.Item label="COUNTRY+PHONE *" required>
+              <Form.Item label={t('personal_form_phone_label')} required>
                 <Input.Group compact>
-                  <Form.Item name="employerCountryCode" noStyle rules={[{ required: true }]}>
-                    <Input style={{ width: '25%' }} placeholder="(+58)" />
+                  <Form.Item name="employerCountryCode" noStyle rules={[{ required: true, message: t('validation_code_required') }]}>
+                    <Input style={{ width: '25%' }} placeholder={t('personal_form_phone_code_placeholder')} />
                   </Form.Item>
-                  <Form.Item name="employerPhone" noStyle rules={[{ required: true }]}>
-                    <Input style={{ width: '75%' }} placeholder="Enter your phone number" />
+                  <Form.Item name="employerPhone" noStyle rules={[{ required: true, message: t('validation_number_required') }]}>
+                    <Input style={{ width: '75%' }} placeholder={t('personal_form_phone_number_placeholder')} />
                   </Form.Item>
                 </Input.Group>
               </Form.Item>

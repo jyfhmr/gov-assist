@@ -3,7 +3,9 @@ import { Steps, Button, Form, theme, Space, Typography } from "antd";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import useMediaQuery from "../../hooks/useMediaQuery";
+
 import ApplicantForm from "../ApplicantForm/ApplicantForm";
 import PassportForm from "../PassportForm/PassportForm";
 import EligibilityForm from "../EligibilityForm/EligibilityForm";
@@ -14,20 +16,18 @@ import TravelForm from "../TravelForm/TravelForm";
 import ReviewForm from "../ReviewForm/ReviewForm";
 import PaymentForm from "../PaymentForm/PaymentForm";
 import SuccessPage from "../SuccessPage/SuccessPage";
-import {
-  BASE_SERVICE_COST,
-  GOVERNMENT_FEE,
-  REFUSAL_GUARANTEE_COST,
-} from "../../constants";
+import { BASE_SERVICE_COST, GOVERNMENT_FEE, REFUSAL_GUARANTEE_COST } from "../../constants";
 
 const { Title, Text } = Typography;
 
 const MultiStepForm: React.FC = () => {
-  // const createPaymentIntentUrl = "https://visa-govassist.org/backend/api/create-payment-intent.php";
-  // const saveApplicationUrl = "https://visa-govassist.org/backend/api/save-application.php";
+  const { t } = useTranslation();
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [paymentAmount, setPaymentAmount] = useState(
+    BASE_SERVICE_COST + GOVERNMENT_FEE + REFUSAL_GUARANTEE_COST
+  );
 
-  const createPaymentIntentUrl =
-    "http://localhost:8000/api/create-payment-intent.php";
+  const createPaymentIntentUrl = "http://localhost:8000/api/create-payment-intent.php";
   const saveApplicationUrl = "http://localhost:8000/api/save-application.php";
 
   const createPaymentIntent = async (formData: any) => {
@@ -36,33 +36,23 @@ const MultiStepForm: React.FC = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: Math.round(paymentAmount * 100), formData }),
     });
-
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(
-        errorData.message ||
-          "An error occurred while creating the payment intent."
-      );
+      throw new Error(errorData.message || "An error occurred while creating the payment intent.");
     }
-
     return response.json();
   };
 
-  const saveApplication = async (payload: {
-    formData: any;
-    paymentIntentId: string;
-  }) => {
+  const saveApplication = async (payload: { formData: any; paymentIntentId: string; }) => {
     const response = await fetch(saveApplicationUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || "Failed to save application.");
     }
-
     return response.json();
   };
 
@@ -72,157 +62,50 @@ const MultiStepForm: React.FC = () => {
   const stripe = useStripe();
   const elements = useElements();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const [submissionStatus, setSubmissionStatus] = useState({
-    isSuccess: false,
-    applicationId: "",
-    email: "",
-  });
-
-  const [isConfirming, setIsConfirming] = useState(false);
-
-  const [paymentAmount, setPaymentAmount] = useState(
-    BASE_SERVICE_COST + GOVERNMENT_FEE + REFUSAL_GUARANTEE_COST
-  );
+  const [submissionStatus, setSubmissionStatus] = useState({ isSuccess: false, applicationId: "", email: "" });
 
   const steps = [
-    {
-      title: "Applicant Information",
-      content: <ApplicantForm />,
-      fields: [
-        "email",
-        "passportPhoto",
-        "firstName",
-        "familyName",
-        "dob",
-        "cityOfBirth",
-        "countryOfBirth",
-      ],
-    },
-    {
-      title: "Passport Information",
-      content: <PassportForm />,
-      fields: [
-        "countryOfCitizenship",
-        "issuingCountry",
-        "passportNumber",
-        "passportNumberConfirm",
-        "gender",
-        "hasOtherDocuments",
-        "isOtherCitizenNow",
-        "wasOtherCitizen",
-        "isGlobalEntryMember",
-      ],
-    },
-    {
-      title: "Eligibility Information",
-      content: <EligibilityForm />,
-      fields: [
-        "q1_health",
-        "q2_crime",
-        "q3_drugs",
-        "q4_terror",
-        "q5_fraud",
-        "q6_employment",
-        "q7_visa_denial",
-        "q8_overstay",
-        "q9_travel",
-      ],
-    },
-    {
-      title: "Personal Information",
-      content: <PersonalForm />,
-      fields: [
-        "address1",
-        "city",
-        "stateProvince",
-        "country",
-        "phoneType",
-        "countryPhoneCode",
-        "phoneNumber",
-        "motherFamilyName",
-        "motherFirstName",
-        "fatherFamilyName",
-        "fatherFirstName",
-      ],
-    },
-    {
-      title: "Social Media Information",
-      content: <SocialMediaForm />,
-      fields: [],
-    },
-    {
-      title: "Employment Information",
-      content: <EmploymentForm />,
-      fields: ["hasEmployer"],
-    },
-    {
-      title: "Travel Information",
-      content: <TravelForm />,
-      fields: [
-        "isTransit",
-        "emergency_familyName",
-        "emergency_firstName",
-        "emergency_email",
-        "emergency_phoneCode",
-        "emergency_phoneNumber",
-      ],
-    },
-    {
-      title: "Review & Certification",
-      content: <ReviewForm />,
-      fields: [
-        "declarationAgree",
-        "thirdPartyAgree",
-        "securityQuestion",
-        "securityAnswer",
-      ],
-    },
-    { title: "Payment", content: <PaymentForm onTotalAmountChange={setPaymentAmount} />, fields: ['fullName', 'billingEmail', 'billingAddress', 'termsAgree'] },
+    { title: t('multistep_form_step_applicant_info'), content: <ApplicantForm />, fields: ["email", "passportPhoto", "firstName", "familyName", "dob", "cityOfBirth", "countryOfBirth"] },
+    { title: t('multistep_form_step_passport_info'), content: <PassportForm />, fields: ["countryOfCitizenship", "issuingCountry", "passportNumber", "passportNumberConfirm", "gender", "hasOtherDocuments", "isOtherCitizenNow", "wasOtherCitizen", "isGlobalEntryMember"] },
+    { title: t('multistep_form_step_eligibility_info'), content: <EligibilityForm />, fields: ["q1_health", "q2_crime", "q3_drugs", "q4_terror", "q5_fraud", "q6_employment", "q7_visa_denial", "q8_overstay", "q9_travel"] },
+    { title: t('multistep_form_step_personal_info'), content: <PersonalForm />, fields: ["address1", "city", "stateProvince", "country", "phoneType", "countryPhoneCode", "phoneNumber", "motherFamilyName", "motherFirstName", "fatherFamilyName", "fatherFirstName"] },
+    { title: t('multistep_form_step_social_media_info'), content: <SocialMediaForm />, fields: [] },
+    { title: t('multistep_form_step_employment_info'), content: <EmploymentForm />, fields: ["hasEmployer"] },
+    { title: t('multistep_form_step_travel_info'), content: <TravelForm />, fields: ["isTransit", "emergency_familyName", "emergency_firstName", "emergency_email", "emergency_phoneCode", "emergency_phoneNumber"] },
+    { title: t('multistep_form_step_review_cert'), content: <ReviewForm />, fields: ["declarationAgree", "thirdPartyAgree", "securityQuestion", "securityAnswer"] },
+    { title: t('multistep_form_step_payment'), content: <PaymentForm onTotalAmountChange={setPaymentAmount} />, fields: ['fullName', 'billingEmail', 'billingAddress', 'termsAgree'] },
   ];
 
   const saveApplicationMutation = useMutation({
     mutationFn: saveApplication,
     onSuccess: (data, variables) => {
-      toast.success("Your application and payment were successful!");
-      setSubmissionStatus({
-        isSuccess: true,
-        applicationId: data.application_id,
-        email: variables.formData.email,
-      });
+      toast.success(t('toast_save_success'));
+      setSubmissionStatus({ isSuccess: true, applicationId: data.application_id, email: variables.formData.email });
     },
     onError: (error) => {
-      toast.error(
-        `Critical Error: Payment was successful but we failed to save your application. Please contact support. Details: ${error.message}`
-      );
+      toast.error(t('toast_save_critical_error', { detail: error.message }));
     },
   });
 
   const createPaymentIntentMutation = useMutation({
     mutationFn: createPaymentIntent,
     onSuccess: async (data, originalFormData) => {
+      if (isConfirming) return;
+      setIsConfirming(true);
       const { clientSecret } = data;
-      if (!stripe || !elements) return;
+      if (!stripe || !elements) { setIsConfirming(false); return; }
       const cardElement = elements.getElement(CardElement);
-      if (!cardElement) return;
-      const { error, paymentIntent } = await stripe.confirmCardPayment(
-        clientSecret,
-        {
-          payment_method: { card: cardElement },
-        }
-      );
+      if (!cardElement) { setIsConfirming(false); return; }
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, { payment_method: { card: cardElement } });
       if (error) {
-        toast.error(
-          error.message || "An unexpected error occurred during payment."
-        );
+        toast.error(error.message || t('toast_payment_unexpected_error'));
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
-        saveApplicationMutation.mutate({
-          formData: originalFormData,
-          paymentIntentId: paymentIntent.id,
-        });
+        saveApplicationMutation.mutate({ formData: originalFormData, paymentIntentId: paymentIntent.id });
       }
+      setIsConfirming(false);
     },
     onError: (error) => {
-      toast.error(`Could not initiate payment. ${error.message}`);
+      toast.error(t('toast_payment_initiate_error', { detail: error.message }));
     },
   });
 
@@ -232,27 +115,15 @@ const MultiStepForm: React.FC = () => {
       await form.validateFields(fieldsToValidate);
       setCurrent(current + 1);
     } catch (err) {
-      toast.error("Please complete all required fields.");
+      toast.error(t('toast_validation_error'));
     }
   };
 
-  const handleBack = () => {
-    setCurrent(current - 1);
-  };
-
-  const onFinish = (values: any) => {
-    createPaymentIntentMutation.mutate(values);
-  };
-
-  const contentStyle: React.CSSProperties = {
-    marginTop: "24px",
-    padding: "24px",
-    border: `1px dashed ${token.colorBorder}`,
-    borderRadius: token.borderRadiusLG,
-    backgroundColor: token.colorFillAlter,
-  };
-
+  const handleBack = () => { setCurrent(current - 1); };
+  const onFinish = (values: any) => { createPaymentIntentMutation.mutate(values); };
+  const contentStyle: React.CSSProperties = { marginTop: "24px", padding: "24px", border: `1px dashed ${token.colorBorder}`, borderRadius: token.borderRadiusLG, backgroundColor: token.colorFillAlter };
   const initialFormValues = {
+    // Step 1: Applicant Information
     email: "",
     passportPhoto: [],
     firstName: "",
@@ -262,6 +133,8 @@ const MultiStepForm: React.FC = () => {
     dob: { day: undefined, month: undefined, year: "" },
     cityOfBirth: "",
     countryOfBirth: undefined,
+
+    // Step 2: Passport Information
     countryOfCitizenship: undefined,
     issuingCountry: undefined,
     passportNumber: "",
@@ -277,6 +150,8 @@ const MultiStepForm: React.FC = () => {
     pastCitizenships: [],
     isGlobalEntryMember: false,
     passId: "",
+
+    // Step 3: Eligibility Information
     q1_health: false,
     q2_crime: false,
     q3_drugs: false,
@@ -286,6 +161,8 @@ const MultiStepForm: React.FC = () => {
     q7_visa_denial: false,
     q8_overstay: false,
     q9_travel: false,
+
+    // Step 4: Personal Information
     address1: "",
     address2: "",
     apartmentNumber: "",
@@ -299,12 +176,16 @@ const MultiStepForm: React.FC = () => {
     motherFirstName: "",
     fatherFamilyName: "",
     fatherFirstName: "",
+
+    // Step 5: Social Media Information
     noOnlinePresence: false,
     facebookId: "",
     linkedinLink: "",
     twitterId: "",
     instagramId: "",
     otherSocials: [],
+
+    // Step 6: Employment Information
     hasEmployer: false,
     jobTitle: "",
     employerName: "",
@@ -315,6 +196,8 @@ const MultiStepForm: React.FC = () => {
     employerCountry: undefined,
     employerCountryCode: "",
     employerPhone: "",
+
+    // Step 7: Travel Information
     isTransit: false,
     departureDate: { day: undefined, month: undefined, year: "" },
     lessThan24h: false,
@@ -340,39 +223,36 @@ const MultiStepForm: React.FC = () => {
     emergency_phoneNumber: "",
     selfie: [],
     remindMeLater: false,
+
+    // Step 8: Review & Certification
     declarationAgree: false,
     thirdPartyAgree: false,
     securityQuestion: undefined,
     securityAnswer: "",
-  };
 
-  const isProcessing =
-    createPaymentIntentMutation.isPending || saveApplicationMutation.isPending;
+    // Step 9: Payment
+    fullName: "",
+    billingEmail: "",
+    billingAddress: undefined,
+    termsAgree: false,
+    paymentDetails: {
+      total: 0,
+      expediteOption: '72-hours',
+      refusalGuarantee: true,
+    }
+  };
+  const isProcessing = createPaymentIntentMutation.isPending || saveApplicationMutation.isPending || isConfirming;
 
   if (submissionStatus.isSuccess) {
-    return (
-      <SuccessPage
-        applicationId={submissionStatus.applicationId}
-        email={submissionStatus.email}
-      />
-    );
+    return <SuccessPage applicationId={submissionStatus.applicationId} email={submissionStatus.email} />;
   }
 
   return (
-    <Form
-      form={form}
-      onFinish={onFinish}
-      layout="vertical"
-      initialValues={initialFormValues}
-    >
+    <Form form={form} onFinish={onFinish} layout="vertical" initialValues={initialFormValues}>
       {isMobile ? (
-        <div style={{ textAlign: "center", marginTop: "16px" }}>
-          <Title level={4} style={{ marginBottom: 4 }}>
-            {steps[current].title}
-          </Title>
-          <Text type="secondary">
-            Step {current + 1} of {steps.length}
-          </Text>
+        <div style={{ textAlign: 'center', marginTop: '16px' }}>
+          <Title level={4} style={{ marginBottom: 4 }}>{steps[current].title}</Title>
+          <Text type="secondary">{t('multistep_form_mobile_step_indicator', { current: current + 1, total: steps.length })}</Text>
         </div>
       ) : (
         <Steps
@@ -380,37 +260,14 @@ const MultiStepForm: React.FC = () => {
           items={steps.map((item) => ({ key: item.title, title: item.title }))}
         />
       )}
-
       <div style={contentStyle}>
-        {steps.map((step, index) => (
-          <div
-            key={step.title}
-            style={{ display: index === current ? "block" : "none" }}
-          >
-            {step.content}
-          </div>
-        ))}
+        {steps.map((step, index) => (<div key={step.title} style={{ display: index === current ? "block" : "none" }}>{step.content}</div>))}
       </div>
-
-      <div
-        style={{ marginTop: 24, display: "flex", justifyContent: "flex-end" }}
-      >
+      <div style={{ marginTop: 24, display: "flex", justifyContent: "flex-end" }}>
         <Space>
-          {current > 0 && (
-            <Button onClick={handleBack} disabled={isProcessing}>
-              Back
-            </Button>
-          )}
-          {current < steps.length - 1 && (
-            <Button type="primary" onClick={handleNext}>
-              Continue
-            </Button>
-          )}
-          {current === steps.length - 1 && (
-            <Button type="primary" htmlType="submit" loading={isProcessing}>
-              {isProcessing ? "Processing..." : "Pay & Submit"}
-            </Button>
-          )}
+          {current > 0 && (<Button onClick={handleBack} disabled={isProcessing}>{t('button_back')}</Button>)}
+          {current < steps.length - 1 && (<Button type="primary" onClick={handleNext}>{t('button_continue')}</Button>)}
+          {current === steps.length - 1 && (<Button type="primary" htmlType="submit" loading={isProcessing}>{isProcessing ? t('button_processing') : t('button_pay_submit')}</Button>)}
         </Space>
       </div>
     </Form>

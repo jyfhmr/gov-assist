@@ -1,8 +1,12 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import './i18n';
+// 1. Importa los estilos de Ant Design
+import 'antd/dist/reset.css'; 
+// 2. Importa los estilos de React Toastify
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -1,101 +1,104 @@
 import React from 'react';
 import { Form, Input, Select, Row, Col, Typography } from 'antd';
-import CountrySelect from '../CountrySelect/CountrySelect'; // Reutilizamos nuestro componente
+import { useTranslation } from 'react-i18next';
+import CountrySelect from '../CountrySelect/CountrySelect';
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const PersonalForm: React.FC = () => {
-  return (
-    <>
-      <Title level={4}>Your Contact Information</Title>
-      <Row gutter={24}>
-        <Col xs={24} lg={8}>
-          <Form.Item name="address1" label="ADDRESS LINE 1 *" rules={[{ required: true }]}>
-            <Input placeholder="Address Line 1" />
-          </Form.Item>
-        </Col>
-        <Col xs={24} lg={8}>
-          <Form.Item name="address2" label="ADDRESS LINE 2">
-            <Input placeholder="Address Line 2" />
-          </Form.Item>
-        </Col>
-        <Col xs={24} lg={8}>
-          <Form.Item name="apartmentNumber" label="APARTMENT NUMBER">
-            <Input placeholder="Apartment Number" />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={24}>
-        <Col xs={24} lg={8}>
-          <Form.Item name="city" label="CITY *" rules={[{ required: true }]}>
-            <Input placeholder="City" />
-          </Form.Item>
-        </Col>
-        <Col xs={24} lg={8}>
-          <Form.Item name="stateProvince" label="STATE/PROVINCE/REGION *" rules={[{ required: true }]}>
-            <Input placeholder="State/Province/Region" />
-          </Form.Item>
-        </Col>
-        <Col xs={24} lg={8}>
-          <Form.Item name="country" label="COUNTRY *" rules={[{ required: true }]}>
-            <CountrySelect placeholder="Select Country" />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={24}>
-        <Col xs={24} lg={12}>
-          <Form.Item name="phoneType" label="TELEPHONE TYPE *" rules={[{ required: true }]}>
-            <Select placeholder="Select phone type">
-              <Option value="home">Home</Option>
-              <Option value="mobile">Mobile</Option>
-              <Option value="work">Work</Option>
-            </Select>
-          </Form.Item>
-        </Col>
-        <Col xs={24} lg={12}>
-          <Form.Item label="COUNTRY+PHONE *" required>
-            <Input.Group compact>
-              <Form.Item name="countryPhoneCode" noStyle rules={[{ required: true, message: 'Code required'}]}>
-                 <Input style={{ width: '25%' }} placeholder="(+58)" />
-              </Form.Item>
-              <Form.Item name="phoneNumber" noStyle rules={[{ required: true, message: 'Number required' }]}>
-                <Input style={{ width: '75%' }} placeholder="Enter your phone number" />
-              </Form.Item>
-            </Input.Group>
-          </Form.Item>
-        </Col>
-      </Row>
+    const { t } = useTranslation();
 
-      <hr style={{ margin: '30px 0' }} />
+    return (
+        <>
+            <Title level={4}>{t('personal_form_contact_info_title')}</Title>
+            <Row gutter={24}>
+                <Col xs={24} lg={8}>
+                    <Form.Item name="address1" label={t('personal_form_address1_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                        <Input placeholder={t('personal_form_address1_placeholder')} />
+                    </Form.Item>
+                </Col>
+                <Col xs={24} lg={8}>
+                    <Form.Item name="address2" label={t('personal_form_address2_label')}>
+                        <Input placeholder={t('personal_form_address2_placeholder')} />
+                    </Form.Item>
+                </Col>
+                <Col xs={24} lg={8}>
+                    <Form.Item name="apartmentNumber" label={t('personal_form_apartment_label')}>
+                        <Input placeholder={t('personal_form_apartment_placeholder')} />
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row gutter={24}>
+                <Col xs={24} lg={8}>
+                    <Form.Item name="city" label={t('personal_form_city_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                        <Input placeholder={t('personal_form_city_placeholder')} />
+                    </Form.Item>
+                </Col>
+                <Col xs={24} lg={8}>
+                    <Form.Item name="stateProvince" label={t('personal_form_state_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                        <Input placeholder={t('personal_form_state_placeholder')} />
+                    </Form.Item>
+                </Col>
+                <Col xs={24} lg={8}>
+                    <Form.Item name="country" label={t('personal_form_country_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                        <CountrySelect placeholder={t('applicant_form_country_birth_placeholder')} />
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row gutter={24}>
+                <Col xs={24} lg={12}>
+                    <Form.Item name="phoneType" label={t('personal_form_phone_type_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                        <Select placeholder={t('personal_form_phone_type_placeholder')}>
+                            <Option value="home">{t('personal_form_phone_type_home')}</Option>
+                            <Option value="mobile">{t('personal_form_phone_type_mobile')}</Option>
+                            <Option value="work">{t('personal_form_phone_type_work')}</Option>
+                        </Select>
+                    </Form.Item>
+                </Col>
+                <Col xs={24} lg={12}>
+                    <Form.Item label={t('personal_form_phone_label')} required>
+                        <Input.Group compact>
+                            <Form.Item name="countryPhoneCode" noStyle rules={[{ required: true, message: t('validation_code_required') }]}>
+                                <Input style={{ width: '25%' }} placeholder={t('personal_form_phone_code_placeholder')} />
+                            </Form.Item>
+                            <Form.Item name="phoneNumber" noStyle rules={[{ required: true, message: t('validation_number_required') }]}>
+                                <Input style={{ width: '75%' }} placeholder={t('personal_form_phone_number_placeholder')} />
+                            </Form.Item>
+                        </Input.Group>
+                    </Form.Item>
+                </Col>
+            </Row>
 
-      <Title level={4}>Parents</Title>
-      <Row gutter={24}>
-        <Col xs={24} lg={12}>
-          <Form.Item name="motherFamilyName" label="MOTHER'S FAMILY NAME *" rules={[{ required: true }]}>
-            <Input placeholder="Mother's Family Name" />
-          </Form.Item>
-        </Col>
-        <Col xs={24} lg={12}>
-          <Form.Item name="motherFirstName" label="MOTHER'S FIRST NAME *" rules={[{ required: true }]}>
-            <Input placeholder="Mother's First Name" />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={24}>
-        <Col xs={24} lg={12}>
-          <Form.Item name="fatherFamilyName" label="FATHER'S FAMILY NAME *" rules={[{ required: true }]}>
-            <Input placeholder="Father's Family Name" />
-          </Form.Item>
-        </Col>
-        <Col xs={24} lg={12}>
-          <Form.Item name="fatherFirstName" label="FATHER'S FIRST NAME *" rules={[{ required: true }]}>
-            <Input placeholder="Father's First Name" />
-          </Form.Item>
-        </Col>
-      </Row>
-    </>
-  );
+            <hr style={{ margin: '30px 0' }} />
+
+            <Title level={4}>{t('personal_form_parents_title')}</Title>
+            <Row gutter={24}>
+                <Col xs={24} lg={12}>
+                    <Form.Item name="motherFamilyName" label={t('personal_form_mother_family_name_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                        <Input placeholder={t('personal_form_mother_family_name_placeholder')} />
+                    </Form.Item>
+                </Col>
+                <Col xs={24} lg={12}>
+                    <Form.Item name="motherFirstName" label={t('personal_form_mother_first_name_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                        <Input placeholder={t('personal_form_mother_first_name_placeholder')} />
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row gutter={24}>
+                <Col xs={24} lg={12}>
+                    <Form.Item name="fatherFamilyName" label={t('personal_form_father_family_name_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                        <Input placeholder={t('personal_form_father_family_name_placeholder')} />
+                    </Form.Item>
+                </Col>
+                <Col xs={24} lg={12}>
+                    <Form.Item name="fatherFirstName" label={t('personal_form_father_first_name_label')} rules={[{ required: true, message: t('validation_required') }]}>
+                        <Input placeholder={t('personal_form_father_first_name_placeholder')} />
+                    </Form.Item>
+                </Col>
+            </Row>
+        </>
+    );
 };
 
 export default PersonalForm;

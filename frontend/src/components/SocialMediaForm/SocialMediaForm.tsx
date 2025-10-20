@@ -1,58 +1,49 @@
 import React from 'react';
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  Row,
-  Col,
-  Typography,
-  Checkbox,
-} from 'antd';
+import { Form, Input, Button, Select, Row, Col, Typography, Checkbox } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 
 const { Title } = Typography;
 const { Option } = Select;
 
-// List of platforms for the dynamic selector
 const socialPlatforms = [
   "ASKfm", "JustPaste.it", "LinkedIn", "Tumblr", "Twitter", 
   "VKontakte (VK)", "YouTube", "TikTok", "Other"
 ];
 
 const SocialMediaForm: React.FC = () => {
+  const { t } = useTranslation();
   const form = Form.useFormInstance();
-  // Watcher to check if the user has an online presence
   const noOnlinePresence = Form.useWatch('noOnlinePresence', form);
 
   return (
     <>
-      <Title level={4}>Social Media</Title>
-      <Typography.Paragraph>Please add your social media details below.</Typography.Paragraph>
+      <Title level={4}>{t('social_media_form_title')}</Title>
+      <Typography.Paragraph>{t('social_media_form_description')}</Typography.Paragraph>
 
       <Form.Item name="noOnlinePresence" valuePropName="checked">
-        <Checkbox>I do not have an online presence.</Checkbox>
+        <Checkbox>{t('social_media_form_no_presence_checkbox')}</Checkbox>
       </Form.Item>
 
       <Row gutter={24}>
         <Col xs={24} sm={12} lg={6}>
-          <Form.Item name="facebookId" label="FACEBOOK PAGE ID">
-            <Input placeholder="Facebook Page ID" disabled={noOnlinePresence} />
+          <Form.Item name="facebookId" label={t('social_media_form_facebook_label')}>
+            <Input placeholder={t('social_media_form_facebook_placeholder')} disabled={noOnlinePresence} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} lg={6}>
-          <Form.Item name="linkedinLink" label="LINKEDIN PROFILE LINK">
-            <Input placeholder="LinkedIn Profile Link" disabled={noOnlinePresence} />
+          <Form.Item name="linkedinLink" label={t('social_media_form_linkedin_label')}>
+            <Input placeholder={t('social_media_form_linkedin_placeholder')} disabled={noOnlinePresence} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} lg={6}>
-          <Form.Item name="twitterId" label="TWITTER USER ID">
-            <Input placeholder="Twitter User ID" disabled={noOnlinePresence} />
+          <Form.Item name="twitterId" label={t('social_media_form_twitter_label')}>
+            <Input placeholder={t('social_media_form_twitter_placeholder')} disabled={noOnlinePresence} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} lg={6}>
-          <Form.Item name="instagramId" label="INSTAGRAM USER ID">
-            <Input placeholder="Instagram User ID" disabled={noOnlinePresence} />
+          <Form.Item name="instagramId" label={t('social_media_form_instagram_label')}>
+            <Input placeholder={t('social_media_form_instagram_placeholder')} disabled={noOnlinePresence} />
           </Form.Item>
         </Col>
       </Row>
@@ -68,10 +59,10 @@ const SocialMediaForm: React.FC = () => {
                   <Form.Item
                     {...restField}
                     name={[name, 'platform']}
-                    label="PLATFORM"
-                    rules={[{ required: true, message: 'Platform is required' }]}
+                    label={t('social_media_form_platform_label')}
+                    rules={[{ required: true, message: t('validation_required') }]}
                   >
-                    <Select placeholder="Select Platform" disabled={noOnlinePresence}>
+                    <Select placeholder={t('social_media_form_platform_placeholder')} disabled={noOnlinePresence}>
                       {socialPlatforms.map(p => <Option key={p} value={p}>{p}</Option>)}
                     </Select>
                   </Form.Item>
@@ -80,10 +71,10 @@ const SocialMediaForm: React.FC = () => {
                   <Form.Item
                     {...restField}
                     name={[name, 'identifier']}
-                    label="SOCIAL MEDIA IDENTIFIER"
-                    rules={[{ required: true, message: 'Identifier is required' }]}
+                    label={t('social_media_form_identifier_label')}
+                    rules={[{ required: true, message: t('validation_required') }]}
                   >
-                    <Input placeholder="Social Media Identifier" disabled={noOnlinePresence} />
+                    <Input placeholder={t('social_media_form_identifier_placeholder')} disabled={noOnlinePresence} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} lg={2} style={{ textAlign: 'center', paddingBottom: '10px' }}>
@@ -96,7 +87,7 @@ const SocialMediaForm: React.FC = () => {
             ))}
             <Form.Item>
               <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />} disabled={noOnlinePresence}>
-                Add Social Media
+                {t('social_media_form_add_button')}
               </Button>
             </Form.Item>
           </>

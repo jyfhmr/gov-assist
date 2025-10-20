@@ -1,5 +1,6 @@
 import React from 'react';
 import { Result, Button, Typography } from 'antd';
+import { useTranslation, Trans } from 'react-i18next';
 
 const { Paragraph } = Typography;
 
@@ -9,18 +10,27 @@ interface SuccessPageProps {
 }
 
 const SuccessPage: React.FC<SuccessPageProps> = ({ applicationId, email }) => {
+  const { t } = useTranslation();
+
   return (
     <Result
       status="success"
-      title="Application Submitted Successfully!"
+      title={t('success_page_title')}
       subTitle={
         <Paragraph>
-          Application ID: <strong>{applicationId || 'N/A'}</strong>. A confirmation and receipt have been sent to <strong>{email || 'your email address'}</strong>.
+          <Trans
+            i18nKey="success_page_subtitle"
+            values={{
+              applicationId: applicationId || 'N/A',
+              email: email || t('success_page_default_email')
+            }}
+            components={{ strong: <strong /> }}
+          />
         </Paragraph>
       }
       extra={[
         <Paragraph key="info" type="secondary" style={{ maxWidth: 500, margin: 'auto' }}>
-          Our team will now review your application. This process typically takes 3-5 business days. We will contact you if any further information is required.
+          {t('success_page_extra_info')}
         </Paragraph>,
         <Button 
           type="primary" 
@@ -28,7 +38,7 @@ const SuccessPage: React.FC<SuccessPageProps> = ({ applicationId, email }) => {
           href="mailto:jyfhmr@gmail.com" 
           style={{ marginTop: '24px' }}
         >
-          Contact Support
+          {t('success_page_contact_button')}
         </Button>,
       ]}
     />
