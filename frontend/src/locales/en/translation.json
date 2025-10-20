@@ -263,5 +263,18 @@
   "success_page_extra_info": "Our team will now review your application. This process typically takes 3-5 business days. We will contact you if any further information is required.",
   "success_page_contact_button": "Contact Support",
   "//-- FloatingButton --//": "",
-  "floating_button_tooltip": "Contact Support"
+  "floating_button_tooltip": "Contact Support",
+  "//-- HomePage --//": "",
+  "home_how_it_works_title": "How It Works",
+  "home_our_services_title": "Our Services",
+  "home_service_esta_title": "U.S. ESTA",
+  "home_service_price": "$98",
+  "home_service_subtitle": "Government fee NOT included",
+  "home_start_now_button": "Start now!",
+  "home_feature_1": "24h express processing also available",
+  "home_feature_2": "24/7 customer support via phone",
+  "home_feature_3": "PDF passport copy support included",
+  "home_feature_4": "High success rate",
+  "home_feature_5": "Mistake-free application",
+  "home_feature_6": "Secure online payment processing"
 }
