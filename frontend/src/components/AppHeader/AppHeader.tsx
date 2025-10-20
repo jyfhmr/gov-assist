@@ -8,28 +8,22 @@ const { Text } = Typography;
 
 const AppHeader: React.FC = () => {
 
-    const { t, i18n } = useTranslation(); // Usa el hook
+    const { t, i18n } = useTranslation();
 
     const currentLanguage = i18n.language;
 
-   const toggleLanguage = () => {
+    const toggleLanguage = () => {
         const newLanguage = currentLanguage.startsWith('es') ? 'en' : 'es';
         i18n.changeLanguage(newLanguage);
     };
 
     return (
-        <Header style={{
-            backgroundColor: '#001529',
-            padding: '24px 15px', // Padding consistente para móvil y escritorio
-            height: 'auto', // Altura automática para que se ajuste en móvil
-        }}>
+        <Header className="app-header">
             <div className="app-header-container">
-
                 <a href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-
                     <div className="header-logo">
                         <Image
-                            width={75} // Tamaño ajustado para el logo
+                            width={75}
                             src="/images/logo.png"
                             preview={false}
                             alt="VisaGovAssist Logo"
@@ -38,15 +32,12 @@ const AppHeader: React.FC = () => {
                             VisaGovAssist
                         </p>
                     </div>
-
                 </a>
                 
                 <Button onClick={toggleLanguage}>
                     {currentLanguage.startsWith('es') ? t('header_button_en') : t('header_button_es')}
                 </Button>
-                
             </div>
-
         </Header >
     );
 };

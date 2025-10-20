@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Steps, Button, Form, theme, Space, Typography } from "antd";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { useMutation } from "@tanstack/react-query";
@@ -63,6 +63,14 @@ const MultiStepForm: React.FC = () => {
   const elements = useElements();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [submissionStatus, setSubmissionStatus] = useState({ isSuccess: false, applicationId: "", email: "" });
+
+  useEffect(() => {
+    // Cada vez que 'current' cambie, haz scroll hacia arriba.
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Para una animación suave en lugar de un salto brusco
+    });
+  }, [current])
 
   const steps = [
     { title: t('multistep_form_step_applicant_info'), content: <ApplicantForm />, fields: ["email", "passportPhoto", "firstName", "familyName", "dob", "cityOfBirth", "countryOfBirth"] },

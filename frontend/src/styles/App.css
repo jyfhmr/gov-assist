@@ -82,3 +82,29 @@
 }
 
 /* --- FIN DE LA CORRECCIÓN --- ✨ */
+
+.app-header {
+  position: fixed;
+  top: 0;
+  z-index: 100; /* Asegura que esté por encima de todo */
+  width: 100%;
+  height: auto; /* Permite que la altura se ajuste en móvil */
+  background-color: #001529;
+  padding: 16px 24px;
+  transition: all 0.3s ease;
+}
+
+.content-with-fixed-header {
+  /* Empuja el contenido hacia abajo para que no quede oculto por el header */
+  padding: 0 50px;
+  margin-top: 110px; /* Altura estimada del header en escritorio */
+  transition: all 0.3s ease;
+}
+
+/* --- Media Query para Móviles --- */
+@media (max-width: 768px) {
+  .content-with-fixed-header {
+    padding: 0 15px;
+    margin-top: 180px; /* Altura estimada del header en móvil (es más alto porque se apila) */
+  }
+}

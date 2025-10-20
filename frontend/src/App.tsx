@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Layout, Typography, theme, Button, Image, List } from "antd";
 import { CheckCircleFilled } from "@ant-design/icons";
-import { useTranslation } from 'react-i18next'; // Importa el hook
+import { useTranslation } from 'react-i18next';
 import "./styles/App.css";
 import MultiStepForm from "./components/MultiStepForm/MultiStepForm";
 import { loadStripe } from "@stripe/stripe-js";
@@ -19,60 +19,60 @@ const { Content } = Layout;
 const { Title, Paragraph, Link } = Typography;
 
 const App: React.FC = () => {
-  const { token: { colorBgContainer } } = theme.useToken();
-  const [isFormStarted, setIsFormStarted] = useState(false);
-  const { t } = useTranslation(); // Usa el hook
+    const { token: { colorBgContainer } } = theme.useToken();
+    const [isFormStarted, setIsFormStarted] = useState(false);
+    const { t } = useTranslation();
 
-  const checklistItems = [
-    t('landing_checklist_1'),
-    t('landing_checklist_2'),
-  ];
+    const checklistItems = [
+        t('landing_checklist_1'),
+        t('landing_checklist_2'),
+    ];
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ToastContainer />
-      <Layout style={{ minHeight: "100vh" }}>
+    return (
+        <QueryClientProvider client={queryClient}>
+            <ToastContainer />
+            <Layout style={{ minHeight: "100vh" }}>
 
-        <AppHeader />
+                <AppHeader />
+                
+                <Content className="content-with-fixed-header">
+                    <div className="form-container" style={{ background: colorBgContainer, borderRadius: 8, marginTop: 24 }}>
+                        {!isFormStarted ? (
+                            <div className="landing-content">
+                                <Title level={2} style={{ marginBottom: 0 }}>{t('landing_title_1')}</Title>
+                                <Title level={4} type="secondary" style={{ marginTop: 0 }}>{t('landing_title_2')}</Title>
+                                <Image width={200} src="/images/esta-img.png" preview={false} alt="ESTA Logo" style={{ margin: "24px 0" }}/>
+                                <Paragraph>{t('landing_welcome')}</Paragraph>
+                                <Title level={4}>{t('landing_assurance')}</Title>
+                                <List
+                                    dataSource={checklistItems}
+                                    renderItem={(item) => (
+                                        <List.Item className="checklist-item"><CheckCircleFilled className="check-icon" /> {item}</List.Item>
+                                    )}
+                                    style={{ maxWidth: 450, margin: "0 auto 24px auto", textAlign: "left" }}
+                                />
+                                <Paragraph>
+                                    {t('landing_b1b2_prompt', { 0: <Link href="#">{t('landing_b1b2_link')}</Link> })}
+                                </Paragraph>
+                                <Button type="primary" size="large" onClick={() => setIsFormStarted(true)} className="start-button">
+                                    {t('landing_start_button')}
+                                </Button>
+                            </div>
+                        ) : (
+                            <Elements stripe={stripePromise}>
+                                <MultiStepForm />
+                            </Elements>
+                        )}
+                    </div>
+                </Content>
 
-        <Content className="main-content">
-          <div className="form-container" style={{ background: colorBgContainer, borderRadius: 8, marginTop: 24 }}>
-            {!isFormStarted ? (
-              <div className="landing-content">
-                <Title level={2} style={{ marginBottom: 0 }}>{t('landing_title_1')}</Title>
-                <Title level={4} type="secondary" style={{ marginTop: 0 }}>{t('landing_title_2')}</Title>
-                <Image width={200} src="/images/esta-img.png" preview={false} alt="ESTA Logo" style={{ margin: "24px 0" }}/>
-                <Paragraph>{t('landing_welcome')}</Paragraph>
-                <Title level={4}>{t('landing_assurance')}</Title>
-                <List
-                  dataSource={checklistItems}
-                  renderItem={(item) => (
-                    <List.Item className="checklist-item"><CheckCircleFilled className="check-icon" /> {item}</List.Item>
-                  )}
-                  style={{ maxWidth: 450, margin: "0 auto 24px auto", textAlign: "left" }}
-                />
-                <Paragraph>
-                  {t('landing_b1b2_prompt', { 0: <Link href="#">{t('landing_b1b2_link')}</Link> })}
-                </Paragraph>
-                <Button type="primary" size="large" onClick={() => setIsFormStarted(true)} className="start-button">
-                  {t('landing_start_button')}
-                </Button>
-              </div>
-            ) : (
-              <Elements stripe={stripePromise}>
-                  <MultiStepForm />
-              </Elements>
-            )}
-          </div>
-        </Content>
-
-        <AppFooter />
-        
-        <FloatingSupportButton />
-    
-      </Layout>
-    </QueryClientProvider>
-  );
+                <AppFooter />
+                
+                <FloatingSupportButton />
+            
+            </Layout>
+        </QueryClientProvider>
+    );
 };
 
 export default App;
