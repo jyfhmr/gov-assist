@@ -1,0 +1,28 @@
+/* Contenedor principal del header, usa Flexbox por defecto */
+.app-header-container {
+  display: flex;
+  justify-content: space-between; /* Empuja el logo y el botón a los extremos */
+  align-items: center;
+  width: 100%;
+}
+
+/* Grupo del logo (imagen + texto) */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espacio entre la imagen y el texto */
+}
+
+/* --- Media Query para Móviles (768px o menos) --- */
+@media (max-width: 768px) {
+  .app-header-container {
+    flex-direction: column; /* Apila los elementos verticalmente */
+    justify-content: center;  /* Centra todo en el eje vertical */
+    gap: 16px;                /* Añade espacio entre el logo y el botón */
+  }
+
+  .headerText{
+    font-size: 21px;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Layout, Typography, theme, Button, Image, List, Space } from "antd";
+import { Layout, Typography, theme, Button, Image, List } from "antd";
 import { CheckCircleFilled } from "@ant-design/icons";
 import "./styles/App.css";
 import MultiStepForm from "./components/MultiStepForm/MultiStepForm";
@@ -7,6 +7,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Elements } from "@stripe/react-stripe-js";
 import { ToastContainer } from "react-toastify";
+import AppHeader from "./components/AppHeader/AppHeader";
 
 // Make sure to replace this with your actual publishable key
 const stripePromise = loadStripe("pk_test_51SIYzFPMKaGw34d8CfRtG77qqYbv9L7ik67JPFSkW1s2PahBIkOvDaPhxTGJbiPWZCTToD3MA3IKJbTrEznyZCwm00Al3B6j9V");
@@ -33,30 +34,8 @@ const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <ToastContainer />
       <Layout style={{ minHeight: "100vh" }}>
-        <Header
-          style={{
-            display: "flex",
-            alignItems: "center",
-            backgroundColor: "#001529",
-            padding: "0 24px",
-          }}
-        >
-          <div
-            className="logo"
-            style={{ color: "white", fontSize: "24px", fontWeight: "bold" }}
-          >
-            <Image
-              width={200}
-              src="/images/logo.png"
-              preview={false}
-              alt="ESTA Logo"
-              style={{ margin: "24px 0" }}
-            />
-          </div>
-          {/* <Space style={{ marginLeft: "auto" }}>
-            <Button>Spanish</Button>
-          </Space> */}
-        </Header>
+       
+        <AppHeader />
 
         <Content className="main-content">
           <div
