@@ -35,7 +35,7 @@ const AppHeader: React.FC = () => {
                     </div>
                 </a>
                 
-                <Button onClick={toggleLanguage}>
+                <Button onClick={toggleLanguage} type='primary'>
                     {currentLanguage.startsWith('es') ? t('header_button_en') : t('header_button_es')}
                 </Button>
             </div>
