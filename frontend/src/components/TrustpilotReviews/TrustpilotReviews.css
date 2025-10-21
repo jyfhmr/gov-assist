@@ -1,0 +1,58 @@
+.review-component-wrapper {
+    padding: 40px 0; /* Padding vertical, el horizontal lo manejan los hijos */
+    overflow-x: hidden; /* Previene desbordamiento horizontal */
+}
+
+/* --- Estilos para el resumen de Trustpilot --- */
+.trustpilot-summary {
+    text-align: center;
+    padding: 0 20px; /* Padding horizontal para esta sección */
+    margin-bottom: 24px;
+}
+
+.trustpilot-summary .ant-typography {
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* --- Estilos del carrusel (los originales) --- */
+.review-carousel-wrapper {
+    padding: 0 20px; /* Padding horizontal para el carrusel */
+}
+
+.review-carousel .review-slide {
+    padding: 0 10px; /* Espaciado entre tarjetas */
+}
+
+.review-card {
+    height: 260px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Estilos de las estrellas (verdes) */
+.review-card .ant-rate-star:not(.ant-rate-star-full) .ant-rate-star-second {
+    color: #f0f0f0;
+}
+
+.review-card .ant-rate-star-full .ant-rate-star-first,
+.review-card .ant-rate-star-full .ant-rate-star-second {
+    color: #389e0d;
+}
+
+/* --- Estilos para la sección de estadísticas --- */
+.social-proof-stats {
+    margin-top: 40px;
+    padding: 0 20px; /* Padding horizontal */
+}
+
+.proof-item .proof-icon {
+    font-size: 28px;
+    color: #52c41a; /* Verde de éxito */
+}
+
+.proof-item .ant-typography {
+    font-size: 1.1em;
+}

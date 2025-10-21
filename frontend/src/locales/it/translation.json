@@ -549,5 +549,9 @@
   "refund_fee_credit_card_title": "Tariffa Carta di Credito",
   "refund_fee_credit_card_p1": "La tariffa della carta di credito rappresenta un addebito aggiuntivo imposto dalla piattaforma di terze parti che elabora le nostre transazioni con carta di credito. Questa tariffa aiuta a coprire i costi di mantenimento della piattaforma, come l'elaborazione dei pagamenti, la sicurezza e l'assistenza clienti.",
   "//-- File Upload Validation --//": "",
-  "validation_file_not_image": "Sono consentiti solo file di immagine (png, jpg, jpeg)."
+  "validation_file_not_image": "Sono consentiti solo file di immagine (png, jpg, jpeg).",
+  "reviews_summary": "Valutato <strong>4.2 / 5</strong> basato su <strong>8,635 recensioni</strong>. Mostrando le nostre recensioni a 5 stelle.",
+  "social_proof_customers": "200K+ Clienti Felici",
+  "social_proof_experience": "5+ Anni di Esperienza",
+  "social_proof_delivery": "99% Consegna Puntuale"
 }

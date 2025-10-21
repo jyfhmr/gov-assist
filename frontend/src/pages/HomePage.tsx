@@ -1,13 +1,14 @@
 import React from 'react';
-import { Layout, Typography, Card, Button, List, Image, Flex, Rate } from 'antd';
+import { Layout, Typography, Card, Button, List, Flex } from 'antd';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AppHeader from '../components/AppHeader/AppHeader';
 import AppFooter from '../components/AppFooter/AppFooter';
 import FloatingSupportButton from '../components/FloatingSupportButton/FloatingSupportButton';
+import TrustpilotReviews from '../components/TrustpilotReviews/TrustpilotReviews';
 
 const { Content } = Layout;
-const { Title, Paragraph, Text } = Typography;
+const { Text } = Typography;
 
 const HomePage: React.FC = () => {
     const { t } = useTranslation();
@@ -42,11 +43,7 @@ const HomePage: React.FC = () => {
                     </div>
                 </div>
 
-                <div style={{ padding: '40px 20px' }}>
-                    <Flex justify="center" gap="large" wrap>
-                        {/* Simulación de reseñas de Trustpilot */}
-                    </Flex>
-                </div>
+                <TrustpilotReviews />
 
                 <div className="services-section" style={{ padding: '40px 20px', backgroundColor: 'white' }}>
                     <p className='titles'>{t('home_our_services_title')}</p>

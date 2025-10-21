@@ -549,5 +549,9 @@
   "refund_fee_credit_card_title": "Kreditkartengebühr",
   "refund_fee_credit_card_p1": "Die Kreditkartengebühr stellt eine zusätzliche Gebühr dar, die von der Drittanbieterplattform erhoben wird, die unsere Kreditkartentransaktionen verarbeitet. Diese Gebühr deckt die Kosten für die Wartung der Plattform, wie z. B. Zahlungsabwicklung, Sicherheit und Kundensupport.",
   "//-- File Upload Validation --//": "",
-  "validation_file_not_image": "Es sind nur Bilddateien (png, jpg, jpeg) erlaubt."
+  "validation_file_not_image": "Es sind nur Bilddateien (png, jpg, jpeg) erlaubt.",
+  "reviews_summary": "Bewertet <strong>4.2 / 5</strong> basierend auf <strong>8,635 bewertungen</strong>. Zeigt unsere 5-Sterne-Bewertungen.",
+  "social_proof_customers": "200K+ Zufriedene Kunden",
+  "social_proof_experience": "5+ Jahre Erfahrung",
+  "social_proof_delivery": "99% Pünktliche Lieferung"
 }

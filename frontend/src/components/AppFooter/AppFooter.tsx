@@ -3,7 +3,7 @@ import { Layout, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 const { Footer } = Layout;
-const { Paragraph, Text, Link } = Typography;
+const { Link } = Typography;
 
 const AppFooter: React.FC = () => {
     const { t } = useTranslation();
@@ -28,7 +28,8 @@ const AppFooter: React.FC = () => {
                     gap: "16px",
                 }}
             >
-                <p style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>
+                {/* Añadí margin: 0 para mejor alineación vertical */}
+                <p style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px", margin: 0 }}>
                     {t('footer_copyright')}
                 </p>
                 <div
@@ -45,6 +46,13 @@ const AppFooter: React.FC = () => {
                     <Link href="/legal-disclaimer" style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>{t('footer_legal_disclaimer')}</Link>
                     <Link href="/refund-policy" style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>{t('footer_refund')}</Link>
                 </div>
+                {/* --- IMAGEN AÑADIDA AQUÍ --- */}
+                <img
+                    src="https://visa.govassist.com/images/ssl.png"
+                    alt="SSL Secured"
+                    style={{ height: "32px", width: "auto" }}
+                />
+                {/* --------------------------- */}
             </div>
         </Footer>
     );

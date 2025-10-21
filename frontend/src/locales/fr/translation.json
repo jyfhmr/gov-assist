@@ -549,5 +549,9 @@
   "refund_fee_credit_card_title": "Frais de carte de crédit",
   "refund_fee_credit_card_p1": "Les frais de carte de crédit représentent un coût supplémentaire imposé par la plateforme tierce qui traite nos transactions par carte de crédit. Ces frais aident à couvrir les coûts de maintenance de la plateforme, tels que le traitement des paiements, la sécurité et le support client.",
   "//-- File Upload Validation --//": "",
-  "validation_file_not_image": "Seuls les fichiers image (png, jpg, jpeg) sont autorisés."
+  "validation_file_not_image": "Seuls les fichiers image (png, jpg, jpeg) sont autorisés.",
+  "reviews_summary": "Noté <strong>4.2 / 5</strong> basé sur <strong>8,635 avis</strong>. Affichage de nos avis 5 étoiles.",
+  "social_proof_customers": "200K+ Clients Satisfaits",
+  "social_proof_experience": "5+ Ans d'Expérience",
+  "social_proof_delivery": "99% Livraison à Temps"
 }
