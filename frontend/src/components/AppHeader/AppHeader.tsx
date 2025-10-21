@@ -1,21 +1,44 @@
-import React, { useState } from 'react';
-import { Layout, Button, Image, Typography } from 'antd';
-import './AppHeader.css'; // Importamos nuestros nuevos estilos
+import React from 'react';
+import { Layout, Button, Image, Dropdown, MenuProps, Space } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
+import './AppHeader.css';
 
 const { Header } = Layout;
-const { Text } = Typography;
+
+// Define los idiomas disponibles
+const languages = [
+    { key: 'en', label: 'English', countryCode: 'gb' },
+    { key: 'es', label: 'Español', countryCode: 'es' },
+    { key: 'fr', label: 'Français', countryCode: 'fr' },
+    { key: 'de', label: 'Deutsch', countryCode: 'de' },
+    { key: 'it', label: 'Italiano', countryCode: 'it' },
+];
 
 const AppHeader: React.FC = () => {
-
     const { t, i18n } = useTranslation();
 
-    const currentLanguage = i18n.language;
+    // Encuentra el objeto del idioma actual para mostrar su bandera y nombre
+    const currentLanguage = languages.find(lang => i18n.language.startsWith(lang.key)) || languages[0];
 
-    const toggleLanguage = () => {
-        const newLanguage = currentLanguage.startsWith('es') ? 'en' : 'es';
-        i18n.changeLanguage(newLanguage);
+    const handleLanguageChange: MenuProps['onClick'] = ({ key }) => {
+        i18n.changeLanguage(key);
     };
+
+    // Construye los items del menú para el Dropdown
+    const menuItems: MenuProps['items'] = languages.map(lang => ({
+        key: lang.key,
+        label: (
+            <Space>
+                <img
+                    src={`https://flagcdn.com/w20/${lang.countryCode.toLowerCase()}.png`}
+                    alt={`${lang.label} flag`}
+                    width="20"
+                />
+                {lang.label}
+            </Space>
+        ),
+    }));
 
     return (
         <Header className="app-header">
@@ -29,15 +52,25 @@ const AppHeader: React.FC = () => {
                             alt="VisaGovAssist Logo"
                             className='header-logo-img'
                         />
-                        <div style={{ color: 'white', fontWeight: 'bold'}} className='headerText'>
-                            VisaGovAssist
+                        <div style={{ color: 'white', fontWeight: 'bold' }} className='headerText'>
+                            {t('header_title')}
                         </div>
                     </div>
                 </a>
                 
-                <Button onClick={toggleLanguage} type='primary'>
-                    {currentLanguage.startsWith('es') ? t('header_button_en') : t('header_button_es')}
-                </Button>
+                <Dropdown menu={{ items: menuItems, onClick: handleLanguageChange }}>
+                    <Button type="primary">
+                        <Space>
+                            <img
+                                src={`https://flagcdn.com/w20/${currentLanguage.countryCode.toLowerCase()}.png`}
+                                alt={`${currentLanguage.label} flag`}
+                                width="20"
+                            />
+                            {currentLanguage.label}
+                            <DownOutlined />
+                        </Space>
+                    </Button>
+                </Dropdown>
             </div>
         </Header >
     );

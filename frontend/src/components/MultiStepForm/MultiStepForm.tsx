@@ -27,11 +27,11 @@ const MultiStepForm: React.FC = () => {
     BASE_SERVICE_COST + GOVERNMENT_FEE + REFUSAL_GUARANTEE_COST
   );
 
-  // const createPaymentIntentUrl = "http://localhost:8000/api/create-payment-intent.php";
-  // const saveApplicationUrl = "http://localhost:8000/api/save-application.php";
+  const createPaymentIntentUrl = "http://localhost:8000/api/create-payment-intent.php";
+  const saveApplicationUrl = "http://localhost:8000/api/save-application.php";
 
-    const createPaymentIntentUrl = "https://visa-govassist.org/backend/api/create-payment-intent.php";
-  const saveApplicationUrl = "https://visa-govassist.org/backend/api/save-application.php";
+  //   const createPaymentIntentUrl = "https://visa-govassist.org/backend/api/create-payment-intent.php";
+  // const saveApplicationUrl = "https://visa-govassist.org/backend/api/save-application.php";
 
   const createPaymentIntent = async (formData: any) => {
     const response = await fetch(createPaymentIntentUrl, {
