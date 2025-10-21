@@ -59,6 +59,17 @@ const MultiStepForm: React.FC = () => {
     return response.json();
   };
 
+  const onFinishFailed = (errorInfo: any) => {
+    console.error('Validation Failed:', errorInfo);
+    // Muestra un toast genérico para asegurar que el usuario vea el error
+    toast.error(t('toast_validation_error'));
+    // Opcional: Intenta hacer scroll al primer campo con error
+    if (errorInfo.errorFields.length > 0) {
+      const errorFieldName = errorInfo.errorFields[0].name;
+      form.scrollToField(errorFieldName);
+    }
+  };
+
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const { token } = theme.useToken();
@@ -131,7 +142,32 @@ const MultiStepForm: React.FC = () => {
   };
 
   const handleBack = () => { setCurrent(current - 1); };
-  const onFinish = (values: any) => { createPaymentIntentMutation.mutate(values); };
+
+  const handleFinalSubmit = async () => {
+        try {
+            // Validamos SÓLO los campos del último paso (Payment)
+            const fieldsToValidate = steps[steps.length - 1].fields;
+
+            await form.validateFields(fieldsToValidate);
+
+            // Si la validación del último paso es exitosa, obtenemos TODOS los valores
+            const allValues = form.getFieldsValue(true); 
+            
+            // Y ahora sí, llamamos a la mutación para crear el Payment Intent
+            createPaymentIntentMutation.mutate(allValues);
+
+        } catch (errorInfo) {
+            // Si falla la validación del último paso, mostramos el error
+            console.error('Validation Failed on Final Step:', errorInfo);
+            toast.error(t('toast_validation_error'));
+            // Intentamos hacer scroll al primer campo con error en el paso actual
+            if (errorInfo && (errorInfo as any).errorFields && (errorInfo as any).errorFields.length > 0) {
+                 const errorFieldName = (errorInfo as any).errorFields[0].name;
+                 form.scrollToField(errorFieldName);
+            }
+        }
+    };
+
   const contentStyle: React.CSSProperties = { marginTop: "24px", padding: "24px", border: `1px dashed ${token.colorBorder}`, borderRadius: token.borderRadiusLG, backgroundColor: token.colorFillAlter };
   const initialFormValues = {
     // Step 1: Applicant Information
@@ -254,12 +290,14 @@ const MultiStepForm: React.FC = () => {
   };
   const isProcessing = createPaymentIntentMutation.isPending || saveApplicationMutation.isPending || isConfirming;
 
+  const isStripeReady = stripe && elements;
+
   if (submissionStatus.isSuccess) {
     return <SuccessPage applicationId={submissionStatus.applicationId} email={submissionStatus.email} />;
   }
 
   return (
-    <Form form={form} onFinish={onFinish} layout="vertical" initialValues={initialFormValues}>
+    <Form form={form} layout="vertical" initialValues={initialFormValues} onFinishFailed={onFinishFailed}>
       {isMobile ? (
         <div style={{ textAlign: 'center', marginTop: '16px' }}>
           <Title level={4} style={{ marginBottom: 4 }}>{steps[current].title}</Title>
@@ -276,9 +314,19 @@ const MultiStepForm: React.FC = () => {
       </div>
       <div style={{ marginTop: 24, display: "flex", justifyContent: "flex-end" }}>
         <Space>
-          {current > 0 && (<Button onClick={handleBack} disabled={isProcessing}>{t('button_back')}</Button>)}
+          {current > 0 && (<Button onClick={handleBack} disabled={!isStripeReady || isProcessing} >{t('button_back')}</Button>)}
           {current < steps.length - 1 && (<Button type="primary" onClick={handleNext}>{t('button_continue')}</Button>)}
-          {current === steps.length - 1 && (<Button type="primary" htmlType="submit" loading={isProcessing}>{isProcessing ? t('button_processing') : t('button_pay_submit')}</Button>)}
+          {current === steps.length - 1 && (
+            // ✨ 4. El botón final ya NO tiene htmlType="submit" y llama a nuestra nueva función
+            <Button
+              type="primary"
+              onClick={handleFinalSubmit}
+              loading={isProcessing}
+              disabled={!stripe || !elements || isProcessing} // Mantenemos la lógica de disabled
+            >
+              {isProcessing ? t('button_processing') : t('button_pay_submit')}
+            </Button>
+          )}
         </Space>
       </div>
     </Form>
