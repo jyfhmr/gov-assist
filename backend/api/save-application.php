@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/../config/database.php';
 
-$frontendUrl = $_ENV['FRONTEND_URl'];
+$frontendUrl = $_ENV['FRONTEND_URL'];
 
 // --- Cabeceras CORS ---
 header("Access-Control-Allow-Origin:$frontendUrl"); // Cambia esto en producción

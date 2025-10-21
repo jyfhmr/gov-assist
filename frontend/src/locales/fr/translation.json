@@ -547,5 +547,7 @@
   "refund_fee_handling_title": "Frais de gestion - Notre service de documents de voyage",
   "refund_fee_handling_p1": "En plus des frais de demande, des frais de traduction, etc., des frais de conseil et de gestion de processus sont facturés lorsque vous commandez notre agence de services d'assistance voyage. Selon la catégorie de document de voyage, nous facturons des frais de service de gestion fixes tout en tenant compte des différents coûts de traitement.",
   "refund_fee_credit_card_title": "Frais de carte de crédit",
-  "refund_fee_credit_card_p1": "Les frais de carte de crédit représentent un coût supplémentaire imposé par la plateforme tierce qui traite nos transactions par carte de crédit. Ces frais aident à couvrir les coûts de maintenance de la plateforme, tels que le traitement des paiements, la sécurité et le support client."
+  "refund_fee_credit_card_p1": "Les frais de carte de crédit représentent un coût supplémentaire imposé par la plateforme tierce qui traite nos transactions par carte de crédit. Ces frais aident à couvrir les coûts de maintenance de la plateforme, tels que le traitement des paiements, la sécurité et le support client.",
+  "//-- File Upload Validation --//": "",
+  "validation_file_not_image": "Seuls les fichiers image (png, jpg, jpeg) sont autorisés."
 }

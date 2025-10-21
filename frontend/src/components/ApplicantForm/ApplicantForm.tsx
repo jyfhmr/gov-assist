@@ -1,8 +1,12 @@
 import React from 'react';
-import { Form, Input, Button, Select, Row, Col, Typography, Upload, Radio, Space, Tooltip } from 'antd';
+import { Form, Input, Button, Select, Row, Col, Typography, Upload, Radio, Space, Tooltip, message } from 'antd';
+import type { UploadChangeParam } from 'antd/es/upload';
+import type { UploadFile, RcFile } from 'antd/es/upload/interface';
 import { QuestionCircleOutlined, UploadOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import CountrySelect from '../CountrySelect/CountrySelect';
+import { getBase64 } from '../../utils/imageUtils';
+import { toast } from 'react-toastify';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -12,6 +16,61 @@ const ApplicantForm: React.FC = () => {
     const form = Form.useFormInstance();
     const showAliases = Form.useWatch('hasAliases', form);
 
+    // ✨ 1. Esta es la nueva función que se llama en el 'onChange' del Upload
+    const handlePassportUpload = async (info: UploadChangeParam<UploadFile>) => {
+
+        const file = info.file;
+        const fileList = info.fileList;
+
+        // ✨ --- INICIO DE LA VALIDACIÓN DE TIPO --- ✨
+        // Validamos solo cuando un archivo es añadido o 'uploading'
+        if (file.status === 'uploading' || (file.originFileObj && file.status !== 'removed')) {
+            const isImage = file.type?.startsWith('image/');
+            if (!isImage) {
+                toast.error(t('validation_file_not_image'));
+                // Removemos el archivo inválido del fileList del formulario
+                form.setFieldsValue({ passportPhoto: [] });
+                return; // Detenemos el proceso
+            }
+        }
+
+        // Si el usuario añade un archivo nuevo
+        if (info.file.status === 'uploading' || info.file.status === 'done') {
+             // 'uploading' es el estado inicial cuando beforeUpload retorna false
+            if (info.file.originFileObj) {
+                try {
+                    const base64 = await getBase64(info.file.originFileObj as RcFile);
+                    // Actualizamos el valor en el formulario manualmente
+                    form.setFieldsValue({
+                        passportPhoto: [{
+                            uid: info.file.uid,
+                            name: info.file.name,
+                            status: 'done',
+                            thumbUrl: base64, // Este es el Base64 que guardaremos
+                        }]
+                    });
+                     // Actualizamos la UI del componente Upload
+                     // Esto es necesario para que muestre la miniatura
+                     form.setFieldValue('passportPhoto', [{
+                        uid: info.file.uid,
+                        name: info.file.name,
+                        status: 'done',
+                        thumbUrl: base64,
+                    }]);
+
+                } catch (error) {
+                    message.error('Error al leer el archivo');
+                    // Si falla, limpiamos el campo
+                    form.setFieldsValue({ passportPhoto: [] });
+                }
+            }
+        } 
+        // Si el usuario elimina el archivo
+        else if (info.file.status === 'removed') {
+            form.setFieldsValue({ passportPhoto: [] });
+        }
+    };
+
     return (
         <>
             <Title level={4}>{t('applicant_form_general_info_title')}</Title>
@@ -20,10 +79,7 @@ const ApplicantForm: React.FC = () => {
                     <Form.Item
                         name="email"
                         label={<span>{t('applicant_form_email_label')} <Tooltip title="..."><QuestionCircleOutlined /></Tooltip></span>}
-                        rules={[
-                            { required: true, message: t('validation_required') }, 
-                            { type: 'email', message: t('validation_email_invalid') }
-                        ]}
+                        rules={[ { required: true, message: t('validation_required') }, { type: 'email', message: t('validation_email_invalid') } ]}
                     >
                         <Input placeholder={t('applicant_form_email_placeholder')} />
                     </Form.Item>
@@ -35,9 +91,21 @@ const ApplicantForm: React.FC = () => {
                         label={<span>{t('applicant_form_upload_label')} <Tooltip title="..."><QuestionCircleOutlined /></Tooltip></span>}
                         rules={[{ required: true, message: t('validation_photo_required') }]}
                         valuePropName="fileList"
-                        getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
+                        // ✨ 2. Usamos 'getValueFromEvent' para manejar correctamente el fileList
+                        // Esto asegura que Ant Design sepa cómo manejar el estado interno del Upload
+                        getValueFromEvent={(e) => {
+                            if (Array.isArray(e)) { return e; }
+                            return e && e.fileList;
+                        }}
                     >
-                        <Upload maxCount={1} beforeUpload={() => false}>
+                        <Upload 
+                            listType="picture"
+                            maxCount={1} 
+                            beforeUpload={() => false} // Previene la subida automática
+                            accept="image/*"
+                            // ✨ 3. Llamamos a nuestra lógica de conversión en 'onChange'
+                            onChange={handlePassportUpload}
+                        >
                             <Button icon={<UploadOutlined />}>{t('applicant_form_upload_button')}</Button>
                         </Upload>
                     </Form.Item>

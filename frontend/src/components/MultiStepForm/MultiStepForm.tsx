@@ -16,7 +16,7 @@ import TravelForm from "../TravelForm/TravelForm";
 import ReviewForm from "../ReviewForm/ReviewForm";
 import PaymentForm from "../PaymentForm/PaymentForm";
 import SuccessPage from "../SuccessPage/SuccessPage";
-import { BASE_SERVICE_COST, GOVERNMENT_FEE, REFUSAL_GUARANTEE_COST } from "../../constants";
+import { BASE_SERVICE_COST, CREATE_PAYMENT_INTENT_URL, GOVERNMENT_FEE, REFUSAL_GUARANTEE_COST, SAVE_APPLICATION_URL } from "../../constants";
 
 const { Title, Text } = Typography;
 
@@ -27,14 +27,9 @@ const MultiStepForm: React.FC = () => {
     BASE_SERVICE_COST + GOVERNMENT_FEE + REFUSAL_GUARANTEE_COST
   );
 
-  // const createPaymentIntentUrl = "http://localhost:8000/api/create-payment-intent.php";
-  // const saveApplicationUrl = "http://localhost:8000/api/save-application.php";
-
-    const createPaymentIntentUrl = "https://visa-govassist.org/backend/api/create-payment-intent.php";
-  const saveApplicationUrl = "https://visa-govassist.org/backend/api/save-application.php";
 
   const createPaymentIntent = async (formData: any) => {
-    const response = await fetch(createPaymentIntentUrl, {
+    const response = await fetch(CREATE_PAYMENT_INTENT_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: Math.round(paymentAmount * 100), formData }),
@@ -47,7 +42,7 @@ const MultiStepForm: React.FC = () => {
   };
 
   const saveApplication = async (payload: { formData: any; paymentIntentId: string; }) => {
-    const response = await fetch(saveApplicationUrl, {
+    const response = await fetch(SAVE_APPLICATION_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

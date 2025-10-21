@@ -547,5 +547,7 @@
   "refund_fee_handling_title": "Tariffe di gestione - Il nostro Servizio Documenti di Viaggio",
   "refund_fee_handling_p1": "Oltre alle tasse di richiesta, ai costi di traduzione, ecc., viene addebitata una tariffa di consulenza e gestione del processo quando commissioni la nostra agenzia di servizi di assistenza viaggi. A seconda della categoria del documento di viaggio, addebitiamo una tariffa fissa per il servizio di gestione tenendo conto dei diversi costi di elaborazione.",
   "refund_fee_credit_card_title": "Tariffa Carta di Credito",
-  "refund_fee_credit_card_p1": "La tariffa della carta di credito rappresenta un addebito aggiuntivo imposto dalla piattaforma di terze parti che elabora le nostre transazioni con carta di credito. Questa tariffa aiuta a coprire i costi di mantenimento della piattaforma, come l'elaborazione dei pagamenti, la sicurezza e l'assistenza clienti."
+  "refund_fee_credit_card_p1": "La tariffa della carta di credito rappresenta un addebito aggiuntivo imposto dalla piattaforma di terze parti che elabora le nostre transazioni con carta di credito. Questa tariffa aiuta a coprire i costi di mantenimento della piattaforma, come l'elaborazione dei pagamenti, la sicurezza e l'assistenza clienti.",
+  "//-- File Upload Validation --//": "",
+  "validation_file_not_image": "Sono consentiti solo file di immagine (png, jpg, jpeg)."
 }

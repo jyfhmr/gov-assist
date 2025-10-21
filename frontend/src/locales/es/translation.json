@@ -544,5 +544,7 @@
   "refund_fee_payment_methods_p5": "No dude en contactarnos para obtener más información en support@govassist.com",
   "refund_fee_handling_title": "Tarifas de gestión - Nuestro Servicio de Documentos de Viaje",
   "refund_fee_handling_p1": "Además de las tarifas de solicitud, costos de traducción, etc., se cobra una tarifa de consultoría y gestión de procesos cuando contrata nuestra agencia de servicios de asistencia en viajes. Dependiendo de la categoría del documento de viaje, cobramos una tarifa de servicio de gestión fija considerando los diferentes costos de procesamiento.",
-  "refund_fee_credit_card_title": "Tarifa de Tarjeta de Crédito - La tarifa de tarjeta de crédito representa un cargo adicional impuesto por la plataforma de terceros que procesa nuestras transactions con tarjeta de crédito. Esta tarifa ayuda a cubrir los costos de mantenimiento de la plataforma, como el procesamiento de pagos, la seguridad y el soporte al cliente."
+  "refund_fee_credit_card_title": "Tarifa de Tarjeta de Crédito - La tarifa de tarjeta de crédito representa un cargo adicional impuesto por la plataforma de terceros que procesa nuestras transactions con tarjeta de crédito. Esta tarifa ayuda a cubrir los costos de mantenimiento de la plataforma, como el procesamiento de pagos, la seguridad y el soporte al cliente.",
+  "//-- File Upload Validation --//": "",
+  "validation_file_not_image": "Solo se permiten archivos de imagen (png, jpg, jpeg)."
 }

@@ -545,5 +545,7 @@
   "refund_fee_payment_methods_p5": "Please feel free to contact us for more information at support@govassist.com",
   "refund_fee_handling_title": "Handling fees - Our Travel Document Service",
   "refund_fee_handling_p1": "In addition to the application fees, translation costs, etc., a consulting and process handling fee is charged when you commission our travel assistance services agency. Depending on the travel document category, we charge a fixed handling service fee while considering the different processing costs.",
-  "refund_fee_credit_card_title": "Credit Card Fee - The credit card fee represents an additional charge imposed by the third party platform that is processing our credit card transactions. This fee helps cover the costs of maintaining the platform, such as payment processing, security, and customer support."
+  "refund_fee_credit_card_title": "Credit Card Fee - The credit card fee represents an additional charge imposed by the third party platform that is processing our credit card transactions. This fee helps cover the costs of maintaining the platform, such as payment processing, security, and customer support.",
+  "//-- File Upload Validation --//": "",
+  "validation_file_not_image": "Only image files (png, jpg, jpeg) are allowed."
 }
