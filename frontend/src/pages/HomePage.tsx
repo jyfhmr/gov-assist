@@ -29,7 +29,7 @@ const HomePage: React.FC = () => {
             <AppHeader />
             <Content className="content-with-fixed-header" style={{ backgroundColor: '#f5f5f5' }}>
                 <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                    <Title level={2}>{t('home_how_it_works_title')}</Title>
+                    <p className='titles'>{t('home_how_it_works_title')}</p>
                     <div className="video-responsive">
                         <iframe
                             width="560" // Ancho estándar de YouTube
@@ -49,18 +49,19 @@ const HomePage: React.FC = () => {
                 </div>
 
                 <div className="services-section" style={{ padding: '40px 20px', backgroundColor: 'white' }}>
-                    <Title level={2} style={{ textAlign: 'center' }}>{t('home_our_services_title')}</Title>
+                    <p className='titles'>{t('home_our_services_title')}</p>
                     <Flex justify="center" style={{ marginTop: '40px' }}>
                         <Card
                             className="service-card"
-                            style={{ width: 350, textAlign: 'center' }}
+                            styles={{header:{fontSize:"36px"}}}
+                            style={{ width: 350, textAlign: 'center', }}
                             headStyle={{ backgroundColor: '#001529', color: 'white', border: 0 }}
                             title={t('home_service_esta_title')}
                         >
-                            <Title level={1}>{t('home_service_price')}</Title>
-                            <Text type="secondary">{t('home_service_subtitle')}</Text>
+                            <p className='bigger-titles'>{t('home_service_price')}</p>
+                            <Text type="secondary" style={{textDecoration:"underline"}}>{t('home_service_subtitle')}</Text>
                             <RouterLink to="/form">
-                                <Button type="primary" size="large" style={{ width: '100%', marginTop: 24, marginBottom: 24 }}>
+                                <Button type="primary" size="large" style={{ width: '100%', marginTop: 24, marginBottom: 24 , fontSize:"26px"}}>
                                     {t('home_start_now_button')}
                                 </Button>
                             </RouterLink>
