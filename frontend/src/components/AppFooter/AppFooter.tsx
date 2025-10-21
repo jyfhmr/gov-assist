@@ -13,9 +13,9 @@ const AppFooter: React.FC = () => {
             <div style={{ marginBottom: "16px", fontSize: "20px", fontWeight: "bold" }}>
                 {t('header_title')}
             </div>
-            <Paragraph style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "10px" }}>
+            <p style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>
                 {t('footer_disclaimer')}
-            </Paragraph>
+            </p>
             <div
                 style={{
                     display: "flex",
@@ -28,9 +28,9 @@ const AppFooter: React.FC = () => {
                     gap: "16px",
                 }}
             >
-                <Text style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>
+                <p style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>
                     {t('footer_copyright')}
-                </Text>
+                </p>
                 <div
                     style={{
                         display: "flex",
@@ -39,11 +39,11 @@ const AppFooter: React.FC = () => {
                         justifyContent: "center",
                     }}
                 >
-                    {/* <Link href="#" style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>{t('footer_terms_use')}</Link>
-                    <Link href="#" style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>{t('footer_terms_service')}</Link>
-                    <Link href="#" style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>{t('footer_privacy_policy')}</Link>
-                    <Link href="#" style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>{t('footer_legal_disclaimer')}</Link>
-                    <Link href="#" style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>{t('footer_refund')}</Link> */}
+                    <Link href="/terms-of-use" style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>{t('footer_terms_use')}</Link>
+                    <Link href="/terms-of-service" style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>{t('footer_terms_service')}</Link>
+                    <Link href="/privacy-policy" style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>{t('footer_privacy_policy')}</Link>
+                    <Link href="/legal-disclaimer" style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>{t('footer_legal_disclaimer')}</Link>
+                    <Link href="/refund-policy" style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "12px" }}>{t('footer_refund')}</Link>
                 </div>
             </div>
         </Footer>

@@ -62,7 +62,7 @@
   }
 
   .ant-typography {
-    font-size: 0.98em !important;
+    font-size: 1.1em !important;
   }
 
   /* 1. Oculta los títulos de los pasos solo en móvil */
@@ -106,5 +106,36 @@
   .content-with-fixed-header {
     padding: 0 12px;
     margin-top: 180px; /* Altura estimada del header en móvil (es más alto porque se apila) */
+  }
+}
+
+.video-responsive {
+  overflow: hidden;
+  padding-bottom: 22.5%; /* Nueva proporción: 40% de ancho * (9/16) */
+  position: relative;
+  height: 0;
+  width: 40%; /* <--- Establece el ancho deseado para escritorio */
+  max-width: 600px; /* Mantenemos un máximo por si 40% es demasiado grande */
+  margin: 24px auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.video-responsive iframe {
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+/* --- Media Query para Móviles (768px o menos) --- */
+@media (max-width: 768px) {
+  /* ... (tus otras reglas de @media) ... */
+
+  .video-responsive {
+    width: 100%; /* <--- En móvil, ocupa todo el ancho disponible */
+    padding-bottom: 56.25%; /* <--- Restaura la proporción 16:9 completa */
+    max-width: none; /* <--- Quitamos el límite de 600px en móvil */
   }
 }

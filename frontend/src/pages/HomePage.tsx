@@ -21,21 +21,25 @@ const HomePage: React.FC = () => {
         t('home_feature_6'),
     ];
 
+    const youtubeVideoId = 'ZC6UegStmto';
+    const embedUrl = `https://www.youtube.com/embed/${youtubeVideoId}`;
+
     return (
         <Layout style={{ minHeight: "100vh" }}>
             <AppHeader />
             <Content className="content-with-fixed-header" style={{ backgroundColor: '#f5f5f5' }}>
                 <div style={{ textAlign: 'center', padding: '40px 20px' }}>
                     <Title level={2}>{t('home_how_it_works_title')}</Title>
-                    <a href="https://https://www.youtube.com/watch?time_continue=4&v=ZC6UegStmto&embeds_referring_euri=https%3A%2F%2Fvisa.govassist.com%2F&source_ve_path=MjM4NTE.youtube.com" target="_blank" rel="noopener noreferrer">
-                        <Image
-                            width={'100%'}
-                            style={{ maxWidth: '600px', cursor: 'pointer', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}
-                            src="/images/video-thumbnail.webp" // Asegúrate de tener esta imagen en tu carpeta public/images
-                            preview={false}
-                            alt="How it works video thumbnail"
-                        />
-                    </a>
+                    <div className="video-responsive">
+                        <iframe
+                            width="560" // Ancho estándar de YouTube
+                            height="315" // Altura estándar (relación 16:9)
+                            src={embedUrl}
+                            title="YouTube video player"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen // Permite pantalla completa
+                        ></iframe>
+                    </div>
                 </div>
 
                 <div style={{ padding: '40px 20px' }}>
